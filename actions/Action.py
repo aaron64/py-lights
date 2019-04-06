@@ -5,7 +5,8 @@ class Action(object):
 		self.settings = {
 			"R": 0,
 			"G": 0,
-			"B": 0
+			"B": 0,
+			"MUTE": False
 		};
 
 	def getR(self):

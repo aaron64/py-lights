@@ -25,44 +25,52 @@ class App:
         self.actions = []
         self.inputs = []
 
-        actionRedChannel = ActionRedChannel(self.params)
-        actionGreenChannel = ActionGreenChannel(self.params)
-        actionBlueChannel = ActionBlueChannel(self.params)
-        actionStrobe = ActionStrobe(self.params)
+        actionRedChannel = addAction(ActionRedChannel(self.params))
+        actionGreenChannel = addAction(ActionGreenChannel(self.params))
+        actionBlueChannel = addAction(ActionBlueChannel(self.params))
+        actionStrobe = addAction(ActionStrobe(self.params))
+        actionStrobeMute = addAction(ActionStrobeMute(self.params))
 
-        self.actions.append(actionRedChannel)
-        self.actions.append(actionGreenChannel)
-        self.actions.append(actionBlueChannel)
-        self.actions.append(actionStrobe)
-
-        self.inputs.append(InputControl(actionRedChannel, "knob", 3, "Val"))
-        self.inputs.append(InputControl(actionGreenChannel, "knob", 4, "Val"))
-        self.inputs.append(InputControl(actionBlueChannel, "knob", 5, "Val"))
-        self.inputs.append(InputControl(actionStrobe, "knob", 6, "Intensity"))
-        self.inputs.append(InputControl(actionStrobe, "knob", 7, "Speed"))
+        addInput(actionRedChannel, "knob", 3, "Val")
+        addInput(actionGreenChannel, "knob", 4, "Val")
+        addInput(actionBlueChannel, "knob", 5, "Val")
+        addInput(actionStrobe, "knob", 6, "Intensity")
+        addInput(actionStrobe, "knob", 7, "Speed")
+        addInput(actionStrobeMute, "knob", 8, "On")
 
         while True:
-            
-            for action in self.actions:
-                action.update(self.params)
 
             self.params["R"] = 0
             self.params["G"] = 0
             self.params["B"] = 0
+            self.params["VISIBILITY"] = 1
+            
+            for action in self.actions:
+                action.update(self.params)
 
             for action in self.actions:
                 self.params["R"] += action.settings["R"]
                 self.params["G"] += action.settings["G"]
                 self.params["B"] += action.settings["B"]
+                if action.settings["MUTE"] == True:
+                    self.params["VISIBILITY"] = 0
 
             self.params["R"] = min(self.params["R"], self.params["MAX"])
             self.params["G"] = min(self.params["G"], self.params["MAX"])
             self.params["B"] = min(self.params["B"], self.params["MAX"])
 
-            pi.set_PWM_dutycycle(RED_PIN, self.params["R"])
-            pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"])
-            pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"])
+            pi.set_PWM_dutycycle(RED_PIN, self.params["R"] * self.params["VISIBILITY"])
+            pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"] * self.params["VISIBILITY"])
+            pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
+
         print("Goodbye!")
+
+    def addAction(self, action):
+        self.actions.append(action)
+        return action
+
+    def addInput(self, action, type, key, setting):
+        self.inputs.append(InputControl(action, type, key, setting))
 
     def __call__(self, event, data=None):
         message, deltatime = event
