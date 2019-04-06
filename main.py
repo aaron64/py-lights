@@ -41,10 +41,10 @@ class App:
 
         self.addInput(actionRedChannel, "knob", 3, "Val")
         self.addInput(actionGreenChannel, "knob", 4, "Val")
-        self.addInput(actionBlueChannel, "knob", 5, "Val")
+        self.addInput(actionBlueChannel, "hold", 5, "Val")
         self.addInput(actionStrobe, "knob", 7, "Intensity")
         self.addInput(actionStrobe, "knob", 8, "Speed")
-        self.addInput(actionStrobeMute, "knob", 9, "On")
+        self.addInput(actionStrobeMute, "hold", 9, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
 
         while True:
@@ -89,7 +89,7 @@ class App:
                 if(midiInput.type == "toggle" and state != 0):
                     midiInput.toggle(self.params)
                 if(midiInput.type == "hold"):
-                    midiInput.hold(self.params, state > 0)
+                    midiInput.hold(self.params, 255 if state > 0 else 0)
                 if(midiInput.type == "knob"):
                     midiInput.knob(self.params, state * 2)
 
