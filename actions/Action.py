@@ -1,5 +1,5 @@
 
-class Action:
+class Action(object):
 	def __init__(self, params, inverse=False):
 		self.inverse = inverse
 		self.settings = {
@@ -17,7 +17,7 @@ class Action:
 	def getB(self):
 		return self.settings["B"]
 
-	def update(self, setting, val):
+	def updateSetting(self, setting, val):
 		self.settings[setting] = val
 
 	def update(self, params):

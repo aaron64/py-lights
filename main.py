@@ -2,43 +2,60 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
+from actions.ActionRedChannel import ActionRedChannel
+from actions.ActionGreenChannel import ActionGreenChannel
+from actions.ActionBlueChannel import ActionBlueChannel
+from midi_in.InputControl import InputControl
+
 class App:
-    def main():
+    def main(self):
         RED_PIN = 17
         GREEN_PIN = 22
         BLUE_PIN = 24
 
-        params = {r: 0, g: 0, b: 0, MAX: 255}
+        self.params = {"R": 0, "G": 0, "B": 0, "MAX": 255}
 
         pi = pigpio.pi()
 
         midiin, port_name = midiutil.open_midiinput(1)
-        midiin.set_callback(this)
+        midiin.set_callback(self)
 
-        this.actions = []
-        this.inputs = []
+        self.actions = []
+        self.inputs = []
 
         actionRedChannel = ActionRedChannel(self.params)
+        actionRedChannel = ActionGreenChannel(self.params)
+        actionRedChannel = ActionBlueChannel(self.params)
+
         self.actions.append(actionRedChannel)
-        self.inputs.append(InputControl(actionRedChannel, "knob", 4))
+        self.actions.append(actionGreenChannel)
+        self.actions.append(actionBlueChannel)
+
+        self.inputs.append(InputControl(actionRedChannel, "knob", 3, "Val"))
+        self.inputs.append(InputControl(actionGreenChannel, "knob", 4, "Val"))
+        self.inputs.append(InputControl(actionBlueChannel, "knob", 5, "Val"))
 
         while True:
             
             for action in self.actions:
-                action.update(params)
+                action.update(self.params)
+
+            self.params["R"] = 0
+            self.params["G"] = 0
+            self.params["B"] = 0
 
             for action in self.actions:
-                self.params.r += action.keys["R"]
-                self.params.g += action.keys["G"]
-                self.params.b += action.keys["B"]
+                self.params["R"] += action.settings["R"]
+                self.params["G"] += action.settings["G"]
+                self.params["B"] += action.settings["B"]
 
-            self.params.r = min(self.params.r, self.params.MAX)
-            self.params.g = min(self.params.g, self.params.MAX)
-            self.params.b = min(self.params.b, self.params.MAX)
+            self.params["R"] = min(self.params["R"], self.params["MAX"])
+            self.params["G"] = min(self.params["G"], self.params["MAX"])
+            self.params["B"] = min(self.params["B"], self.params["MAX"])
 
-            pi.set_PWM_dutycycle(RED_PIN, self.params.r)
-            pi.set_PWM_dutycycle(GREEN_PIN, self.params.g)
-            pi.set_PWM_dutycycle(BLUE_PIN, self.params.b)
+            pi.set_PWM_dutycycle(RED_PIN, self.params["R"])
+            pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"])
+            pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"])
         print("Goodbye!")
 
     def __call__(self, event, data=None):
