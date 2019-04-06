@@ -6,10 +6,18 @@ from actions.ActionRedChannel import ActionRedChannel
 from actions.ActionGreenChannel import ActionGreenChannel
 from actions.ActionBlueChannel import ActionBlueChannel
 from actions.ActionStrobe import ActionStrobe
+from actions.ActionStrobeMute import ActionStrobeMute
 
 from midi_in.InputControl import InputControl
 
 class App:
+    def addAction(self, action):
+        self.actions.append(action)
+        return action
+
+    def addInput(self, action, type, key, setting):
+        self.inputs.append(InputControl(action, type, key, setting))
+
     def main(self):
         RED_PIN = 17
         GREEN_PIN = 22
@@ -25,18 +33,19 @@ class App:
         self.actions = []
         self.inputs = []
 
-        actionRedChannel = addAction(ActionRedChannel(self.params))
-        actionGreenChannel = addAction(ActionGreenChannel(self.params))
-        actionBlueChannel = addAction(ActionBlueChannel(self.params))
-        actionStrobe = addAction(ActionStrobe(self.params))
-        actionStrobeMute = addAction(ActionStrobeMute(self.params))
+        actionRedChannel = self.addAction(ActionRedChannel(self.params))
+        actionGreenChannel = self.addAction(ActionGreenChannel(self.params))
+        actionBlueChannel = self.addAction(ActionBlueChannel(self.params))
+        actionStrobe = self.addAction(ActionStrobe(self.params))
+        actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
 
-        addInput(actionRedChannel, "knob", 3, "Val")
-        addInput(actionGreenChannel, "knob", 4, "Val")
-        addInput(actionBlueChannel, "knob", 5, "Val")
-        addInput(actionStrobe, "knob", 6, "Intensity")
-        addInput(actionStrobe, "knob", 7, "Speed")
-        addInput(actionStrobeMute, "knob", 8, "On")
+        self.addInput(actionRedChannel, "knob", 3, "Val")
+        self.addInput(actionGreenChannel, "knob", 4, "Val")
+        self.addInput(actionBlueChannel, "knob", 5, "Val")
+        self.addInput(actionStrobe, "knob", 7, "Intensity")
+        self.addInput(actionStrobe, "knob", 8, "Speed")
+        self.addInput(actionStrobeMute, "knob", 9, "On")
+        self.addInput(actionStrobeMute, "knob", 10, "Speed")
 
         while True:
 
@@ -64,13 +73,6 @@ class App:
             pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
 
         print("Goodbye!")
-
-    def addAction(self, action):
-        self.actions.append(action)
-        return action
-
-    def addInput(self, action, type, key, setting):
-        self.inputs.append(InputControl(action, type, key, setting))
 
     def __call__(self, event, data=None):
         message, deltatime = event

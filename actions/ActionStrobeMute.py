@@ -1,8 +1,8 @@
 from actions.Action import Action
 
-class ActionStrobe(Action):
+class ActionStrobeMute(Action):
 	def __init__(self, params):
-		super(ActionStrobe, self).__init__(params)
+		super(ActionStrobeMute, self).__init__(params)
 		self.settings["Speed"] = 5
 		self.settings["On"] = 0
 
@@ -10,11 +10,11 @@ class ActionStrobe(Action):
 		self.state = True
 
 	def update(self, params):
-		counter++
+		self.counter += 1
 
-		if counter >= self.settings["Speed"]:
-			counter = 0
-			self.state = !self.state
+		if self.counter >= self.settings["Speed"]:
+			self.counter = 0
+			self.state = not self.state
 
 		if self.state and self.settings["On"] > 127:
 			self.settings["MUTE"] = True
