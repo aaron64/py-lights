@@ -10,11 +10,11 @@ class ActionStrobe(Action):
 		self.state = True
 
 	def update(self, params):
-		counter++
+		self.counter += 1
 
-		if counter >= self.settings["Speed"]:
-			counter = 0
-			self.state = !self.state
+		if self.counter >= self.settings["Speed"]:
+			self.counter = 0
+			self.state = not self.state
 
 		out = 0
 		if self.state:
