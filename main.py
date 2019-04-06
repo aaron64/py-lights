@@ -24,8 +24,8 @@ class App:
         self.inputs = []
 
         actionRedChannel = ActionRedChannel(self.params)
-        actionRedChannel = ActionGreenChannel(self.params)
-        actionRedChannel = ActionBlueChannel(self.params)
+        actionGreenChannel = ActionGreenChannel(self.params)
+        actionBlueChannel = ActionBlueChannel(self.params)
 
         self.actions.append(actionRedChannel)
         self.actions.append(actionGreenChannel)
