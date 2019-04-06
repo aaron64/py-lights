@@ -3,9 +3,7 @@ class Action(object):
 	def __init__(self, params, inverse=False):
 		self.inverse = inverse
 		self.settings = {
-			"R": 0,
-			"G": 0,
-			"B": 0,
+			"Color": Color(0,0,0),
 			"MUTE": False
 		};
 

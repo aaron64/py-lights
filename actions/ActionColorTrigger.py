@@ -1,8 +1,9 @@
 from actions.Action import Action
 
 class ActionColorTrigger(Action):
-	def __init__(self, params):
+	def __init__(self, params, color = Color.WHITE):
 		super(ActionColorTrigger, self).__init__(params)
+		self.settings["Color"] = color
 		self.settings["Attack"] = 10
 		self.settings["Sustain"] = 15
 		self.settings["Release"] = 20
@@ -17,9 +18,7 @@ class ActionColorTrigger(Action):
 			intensity = 0
 			timeLapsed = params["Counter"] - self.triggerTime
 			if timeLapsed < self.settings["Attack"]:
-                                print "{} {}".format(timeLapsed, self.settings["Attack"])
 				intensity = int((float(timeLapsed)/(self.settings["Attack"])) * 255)
-                                print intensity
 			elif timeLapsed < self.settings["Sustain"]:
 				intensity = 255
 			elif timeLapsed < self.settings["Release"]:

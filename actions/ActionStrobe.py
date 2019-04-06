@@ -1,13 +1,15 @@
 from actions.Action import Action
 
 class ActionStrobe(Action):
-	def __init__(self, params):
+	def __init__(self, params, color = Color.WHITE):
 		super(ActionStrobe, self).__init__(params)
 		self.settings["Intensity"] = 0
 		self.settings["Speed"] = 5
 
 		self.counter = 0
 		self.state = True
+
+		self.color = color
 
 	def update(self, params):
 		self.counter += 1
@@ -20,6 +22,6 @@ class ActionStrobe(Action):
 		if (params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
 			out = self.settings["Intensity"]
 		
-		self.settings["R"] = out
-		self.settings["G"] = out
-		self.settings["B"] = out
+		self.settings["Color"].r = self.color.r * (out/255)
+		self.settings["Color"].g = self.color.g * (out/255)
+		self.settings["Color"].b = self.color.b * (out/255)
