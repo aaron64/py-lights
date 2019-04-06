@@ -1,3 +1,4 @@
+from Color import Color
 
 class Action(object):
 	def __init__(self, params, inverse=False):

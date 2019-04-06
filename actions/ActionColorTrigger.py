@@ -1,7 +1,8 @@
 from actions.Action import Action
+from Color import Color
 
 class ActionColorTrigger(Action):
-	def __init__(self, params, color = Color.WHITE):
+	def __init__(self, params, color = Color.white()):
 		super(ActionColorTrigger, self).__init__(params)
 		self.settings["Color"] = color
 		self.settings["Attack"] = 10
