@@ -23,3 +23,6 @@ class Action(object):
 
 	def update(self, params):
 		pass
+
+	def trigger(self)
+		pass
