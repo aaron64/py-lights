@@ -73,7 +73,7 @@ class App:
             pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"] * self.params["VISIBILITY"])
             pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
 
-            time.sleep(0.05)
+            time.sleep(0.01)
 
         print("Goodbye!")
 
