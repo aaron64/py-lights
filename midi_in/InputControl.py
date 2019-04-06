@@ -14,7 +14,7 @@ class InputControl:
 		pass
 
 	def hold(self, params, val):
-		self.action.updateSettings(self.setting, val)
+		self.action.updateSetting(self.setting, val)
 	
 	def knob(self, params, val):
 		self.action.updateSetting(self.setting, val)
