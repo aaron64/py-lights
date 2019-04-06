@@ -7,8 +7,8 @@ class ActionRedChannel(Action):
 		self.color = color
 
 	def update(self, params):
-		self.settings["Color"].r = self.color.r * (self.settings["Val"]/255)
-		self.settings["Color"].g = self.color.g * (self.settings["Val"]/255)
-		self.settings["Color"].b = self.color.b * (self.settings["Val"]/255)
+		self.settings["Color"].r = int(self.color.r * float(self.settings["Val"]/255))
+		self.settings["Color"].g = int(self.color.g * float(self.settings["Val"]/255))
+		self.settings["Color"].b = int(self.color.b * float(self.settings["Val"]/255))
 	
 		
