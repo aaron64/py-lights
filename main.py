@@ -23,7 +23,7 @@ class App:
         GREEN_PIN = 22
         BLUE_PIN = 24
 
-        self.params = {"R": 0, "G": 0, "B": 0, "MAX": 255}
+        self.params = {"R": 0, "G": 0, "B": 0, "MAX": 255, "Counter": 1}
 
         pi = pigpio.pi()
 
@@ -48,6 +48,7 @@ class App:
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
 
         while True:
+            self.params["Counter"] += 1
 
             self.params["R"] = 0
             self.params["G"] = 0
@@ -72,6 +73,8 @@ class App:
             pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"] * self.params["VISIBILITY"])
             pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
 
+            time.sleep(0.05)
+
         print("Goodbye!")
 
     def __call__(self, event, data=None):
@@ -80,17 +83,17 @@ class App:
         print(message)
         vel = message[0]
         key = message[1]
-        state = message[2]
+        state = message[2] * 2
 
         for midiInput in self.inputs:
             if(midiInput.key == key):
                 if(midiInput.type == "trigger" and state != 0 ):
-                    midiInput.trigger(self.params)
+                    midiInput.trigger(self.params, state)
                 if(midiInput.type == "toggle" and state != 0):
                     midiInput.toggle(self.params)
                 if(midiInput.type == "hold"):
                     midiInput.hold(self.params, 255 if state > 0 else 0)
                 if(midiInput.type == "knob"):
-                    midiInput.knob(self.params, state * 2)
+                    midiInput.knob(self.params, state)
 
 App().main()

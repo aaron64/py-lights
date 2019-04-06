@@ -17,7 +17,7 @@ class ActionStrobe(Action):
 			self.state = not self.state
 
 		out = 0
-		if self.state:
+		if (params["Counter"]/self.settings["Speed"])%2 == 1:
 			out = self.settings["Intensity"]
 		
 		self.settings["R"] = out

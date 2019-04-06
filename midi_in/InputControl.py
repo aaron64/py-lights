@@ -7,8 +7,8 @@ class InputControl:
 		self.key = key
 		self.setting = setting
 
-	def trigger(self, params):
-		pass
+	def trigger(self, params, val):
+		self.action.trigger(params, val)
 
 	def toggle(self, params):
 		pass
