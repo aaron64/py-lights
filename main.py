@@ -5,6 +5,8 @@ import pigpio
 from actions.ActionRedChannel import ActionRedChannel
 from actions.ActionGreenChannel import ActionGreenChannel
 from actions.ActionBlueChannel import ActionBlueChannel
+from actions.ActionStrobe import ActionStrobe
+
 from midi_in.InputControl import InputControl
 
 class App:
@@ -26,14 +28,18 @@ class App:
         actionRedChannel = ActionRedChannel(self.params)
         actionGreenChannel = ActionGreenChannel(self.params)
         actionBlueChannel = ActionBlueChannel(self.params)
+        actionStrobe = ActionStrobe(self.params)
 
         self.actions.append(actionRedChannel)
         self.actions.append(actionGreenChannel)
         self.actions.append(actionBlueChannel)
+        self.actions.append(actionStrobe)
 
         self.inputs.append(InputControl(actionRedChannel, "knob", 3, "Val"))
         self.inputs.append(InputControl(actionGreenChannel, "knob", 4, "Val"))
         self.inputs.append(InputControl(actionBlueChannel, "knob", 5, "Val"))
+        self.inputs.append(InputControl(actionStrobe, "knob", 6, "Intensity"))
+        self.inputs.append(InputControl(actionStrobe, "knob", 7, "Speed"))
 
         while True:
             
