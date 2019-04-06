@@ -1,5 +1,3 @@
-
-
 from actions.Action import Action
 
 class ActionRedChannel(Action):

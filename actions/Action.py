@@ -1,6 +1,4 @@
 
-
-
 class Action:
 	def __init__(self, params, inverse=False):
 		self.inverse = inverse
