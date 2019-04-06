@@ -7,6 +7,7 @@ from actions.ActionGreenChannel import ActionGreenChannel
 from actions.ActionBlueChannel import ActionBlueChannel
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
+from actions.ActionColorTrigger import ActionColorTrigger
 
 from midi_in.InputControl import InputControl
 
@@ -38,6 +39,7 @@ class App:
         actionBlueChannel = self.addAction(ActionBlueChannel(self.params))
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
+        actionColorTrigger = self.addAction(ActionColorTrigger(self.params))
 
         self.addInput(actionRedChannel, "knob", 3, "Val")
         self.addInput(actionGreenChannel, "knob", 4, "Val")
@@ -46,6 +48,7 @@ class App:
         self.addInput(actionStrobe, "knob", 8, "Speed")
         self.addInput(actionStrobeMute, "hold", 51, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
+        self.addInput(actionColorTrigger, "trigger", 60, "")
 
         while True:
             self.params["Counter"] += 1
@@ -73,7 +76,7 @@ class App:
             pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"] * self.params["VISIBILITY"])
             pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
 
-            time.sleep(0.05)
+            time.sleep(0.01)
 
         print("Goodbye!")
 

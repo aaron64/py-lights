@@ -24,5 +24,5 @@ class Action(object):
 	def update(self, params):
 		pass
 
-	def trigger(self, params, val)
+        def trigger(self, params, val):
 		pass
