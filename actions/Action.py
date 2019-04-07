@@ -25,3 +25,6 @@ class Action(object):
 
         def trigger(self, params, val):
 		pass
+
+        def release(self, params):
+                pass

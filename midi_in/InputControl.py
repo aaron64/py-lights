@@ -10,6 +10,12 @@ class InputControl:
 	def trigger(self, params, val):
 		self.action.trigger(params, val)
 
+        def triggerHold(self, params, val):
+                if val != 0:
+                        self.action.trigger(params, val)
+                else:
+                        self.action.release(params)
+
 	def toggle(self, params):
 		pass
 

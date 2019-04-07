@@ -50,13 +50,13 @@ class Color:
     def getRandomColor(cls):
     	i = random.randint(0,7)
     	return {
-    		'0': white(),
-    		'1': black()
-    		'2': red(),
-    		'3': green(),
-    		'4': blue(),
-    		'5': cyan(),
-    		'6': yellow(),
-    		'7': magenta()
+    		'0': cls.white(),
+    		'1': cls.black(),
+    		'2': cls.red(),
+    		'3': cls.green(),
+    		'4': cls.blue(),
+    		'5': cls.cyan(),
+    		'6': cls.yellow(),
+    		'7': cls.magenta()
     	}[str(i)]
 	

@@ -1,4 +1,4 @@
-from actions.ActionColorTrigger import ActionColorTrigger
+from actions.ActionColorTriggerHold import ActionColorTriggerHold
 
 from Color import Color
 
@@ -11,6 +11,6 @@ class ActionBuilder():
                 high += 1
 		for i in range(low, high):
 			color = Color.interpolate(col1, col2, (float(i-low)/(high-low)))
-			action = ActionColorTrigger(params, color)
+			action = ActionColorTriggerHold(params, color)
 			actions.append(action)
-			inputs.append(InputControl(action, "trigger", i, ""))
+			inputs.append(InputControl(action, "trigger_hold", i, ""))

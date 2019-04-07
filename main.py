@@ -9,6 +9,7 @@ from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
 from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
+from actions.ActionChaos import ActionChaos
 
 from midi_in.InputControl import InputControl
 from Color import Color
@@ -43,6 +44,7 @@ class App:
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
         actionMute = self.addAction(ActionMute(self.params))
+        actionChaos = self.addAction(ActionChaos(self.params))
 
         self.addInput(actionWhite, "hold", 46, "Intensity")
         self.addInput(actionGreen, "knob", 3, "Intensity")
@@ -52,6 +54,7 @@ class App:
         self.addInput(actionStrobeMute, "hold", 47, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
         self.addInput(actionMute, "hold", 45, "On")
+        self.addInput(actionChaos, "hold", 44, "Intensity")
 
         ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 48, 72, Color.red(), Color.blue())
 
@@ -97,6 +100,8 @@ class App:
             if(midiInput.key == key):
                 if(midiInput.type == "trigger" and state != 0 ):
                     midiInput.trigger(self.params, state)
+                if(midiInput.type == "trigger_hold"):
+                    midiInput.triggerHold(self.params, state)
                 if(midiInput.type == "toggle" and state != 0):
                     midiInput.toggle(self.params)
                 if(midiInput.type == "hold"):
