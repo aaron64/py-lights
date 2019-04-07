@@ -24,6 +24,6 @@ class ActionStrobe(Action):
 		if (params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
 			out = self.settings["Intensity"]
 		
-		self.settings["Color"].r = int(self.color.r * float(out/255))
-		self.settings["Color"].g = int(self.color.g * float(out/255))
-		self.settings["Color"].b = int(self.color.b * float(out/255))
+		self.settings["Color"].r = int(self.color.r * (float(out)/255))
+		self.settings["Color"].g = int(self.color.g * (float(out)/255))
+		self.settings["Color"].b = int(self.color.b * (float(out)/255))

@@ -2,14 +2,13 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
-from actions.ActionRedChannel import ActionRedChannel
-from actions.ActionGreenChannel import ActionGreenChannel
-from actions.ActionBlueChannel import ActionBlueChannel
+from actions.ActionColor import ActionColor
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
 from actions.ActionColorTrigger import ActionColorTrigger
 
 from midi_in.InputControl import InputControl
+from Color import Color
 
 class App:
     def addAction(self, action):
@@ -34,16 +33,17 @@ class App:
         self.actions = []
         self.inputs = []
 
-        actionRedChannel = self.addAction(ActionRedChannel(self.params))
-        actionGreenChannel = self.addAction(ActionGreenChannel(self.params))
-        actionBlueChannel = self.addAction(ActionBlueChannel(self.params))
+        actionWhite = self.addAction(ActionColor(self.params))
+        actionGreen = self.addAction(ActionColor(self.params, Color(0, 255, 0)))
+        actionBlue = self.addAction(ActionColor(self.params, Color(0, 0, 255)))
+        
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
         actionColorTrigger = self.addAction(ActionColorTrigger(self.params))
 
-        self.addInput(actionRedChannel, "knob", 3, "Val")
-        self.addInput(actionGreenChannel, "knob", 4, "Val")
-        self.addInput(actionBlueChannel, "hold", 48, "Val")
+        self.addInput(actionWhite, "hold", 48, "Val")
+        self.addInput(actionGreen, "knob", 3, "Val")
+        self.addInput(actionBlue, "knob", 4, "Val")
         self.addInput(actionStrobe, "knob", 7, "Intensity")
         self.addInput(actionStrobe, "knob", 8, "Speed")
         self.addInput(actionStrobeMute, "hold", 51, "On")
