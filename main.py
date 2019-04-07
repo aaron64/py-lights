@@ -50,7 +50,7 @@ class App:
         self.addInput(actionStrobeMute, "hold", 51, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
 
-        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 60, 72)
+        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 60, 72, Color.green(), Color.blue())
 
         while True:
             self.params["Counter"] += 1
