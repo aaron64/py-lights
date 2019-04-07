@@ -36,22 +36,21 @@ class App:
         self.inputs = []
 
         actionWhite = self.addAction(ActionColor(self.params))
-        actionGreen = self.addAction(ActionColor(self.params, Color(0, 255, 0)))
+        actionGreen = self.addAction(ActionColor(self.params))
         actionBlue = self.addAction(ActionColor(self.params, Color(0, 0, 255)))
         
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
 
-        self.addInput(actionTrigger, "trigger", 59, "")
-        self.addInput(actionWhite, "hold", 48, "Val")
+        self.addInput(actionWhite, "hold", 46, "Val")
         self.addInput(actionGreen, "knob", 3, "Val")
         self.addInput(actionBlue, "knob", 4, "Val")
         self.addInput(actionStrobe, "knob", 7, "Intensity")
         self.addInput(actionStrobe, "knob", 8, "Speed")
-        self.addInput(actionStrobeMute, "hold", 51, "On")
+        self.addInput(actionStrobeMute, "hold", 47, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
 
-        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 60, 72, Color.green(), Color.blue())
+        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 48, 72, Color.red(), Color.blue())
 
         while True:
             self.params["Counter"] += 1
