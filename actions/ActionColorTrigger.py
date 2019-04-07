@@ -28,6 +28,6 @@ class ActionColorTrigger(Action):
                         else:
 				self.triggerTime = 0
 
-			self.settings["Color"].r = int(self.color.r * float(intensity)/255)
-			self.settings["Color"].g = int(self.color.g * float(intensity)/255)
-			self.settings["Color"].b = int(self.color.b * float(intensity)/255)
+			self.settings["Color"].r = int(self.color.r * (float(intensity)/255))
+			self.settings["Color"].g = int(self.color.g * (float(intensity)/255))
+			self.settings["Color"].b = int(self.color.b * (float(intensity)/255))

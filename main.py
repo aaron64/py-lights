@@ -42,6 +42,7 @@ class App:
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
 
+        self.addInput(actionTrigger, "trigger", 59, "")
         self.addInput(actionWhite, "hold", 48, "Val")
         self.addInput(actionGreen, "knob", 3, "Val")
         self.addInput(actionBlue, "knob", 4, "Val")

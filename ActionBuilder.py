@@ -1,12 +1,14 @@
 from actions.ActionColorTrigger import ActionColorTrigger
 from Color import Color
 
+from midi_in.InputControl import InputControl
+
 class ActionBuilder():
 
 	@staticmethod
-	buildKeys(params, actions, inputs, low, high, col1=Color.white(), col2=Color.white()):
+	def buildKeys(params, actions, inputs, low, high, col1=Color.white(), col2=Color.white()):
 		for i in range(low, high):
-			color = Color.interpolate(col1, col2, float((i-low)/(high-low)))
+			color = Color.interpolate(col1, col2, (float(i-low)/(high-low)))
 			action = ActionColorTrigger(params, color)
 			actions.append(action)
-			inputs.append(InputControl(action, type, i, ""))
+			inputs.append(InputControl(action, "trigger", i, ""))
