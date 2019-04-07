@@ -44,9 +44,9 @@ class App:
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
         actionMute = self.addAction(ActionMute(self.params))
 
-        self.addInput(actionWhite, "hold", 46, "Val")
-        self.addInput(actionGreen, "knob", 3, "Val")
-        self.addInput(actionBlue, "knob", 4, "Val")
+        self.addInput(actionWhite, "hold", 46, "Intensity")
+        self.addInput(actionGreen, "knob", 3, "Intensity")
+        self.addInput(actionBlue, "knob", 4, "Intensity")
         self.addInput(actionStrobe, "knob", 7, "Intensity")
         self.addInput(actionStrobe, "knob", 8, "Speed")
         self.addInput(actionStrobeMute, "hold", 47, "On")

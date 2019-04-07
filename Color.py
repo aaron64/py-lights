@@ -1,4 +1,4 @@
-
+import random
 
 class Color:
 
@@ -17,6 +17,10 @@ class Color:
     @classmethod
     def white(cls):
         return cls(255, 255, 255)
+
+    @classmethod
+    def black(cls):
+    	return cls(0, 0, 0)
 
     @classmethod
     def red(cls):
@@ -42,5 +46,17 @@ class Color:
     def magenta(cls):
         return cls(255, 0, 255)
 
-
+    @classmethod
+    def getRandomColor(cls):
+    	i = random.randint(0,7)
+    	return {
+    		'0': white(),
+    		'1': black()
+    		'2': red(),
+    		'3': green(),
+    		'4': blue(),
+    		'5': cyan(),
+    		'6': yellow(),
+    		'7': magenta()
+    	}[str(i)]
 	
