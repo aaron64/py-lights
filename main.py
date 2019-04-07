@@ -2,6 +2,8 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
+from ActionBuilder import ActionBuilder
+
 from actions.ActionColor import ActionColor
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
@@ -39,7 +41,6 @@ class App:
         
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
-        actionColorTrigger = self.addAction(ActionColorTrigger(self.params))
 
         self.addInput(actionWhite, "hold", 48, "Val")
         self.addInput(actionGreen, "knob", 3, "Val")
@@ -48,7 +49,8 @@ class App:
         self.addInput(actionStrobe, "knob", 8, "Speed")
         self.addInput(actionStrobeMute, "hold", 51, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
-        self.addInput(actionColorTrigger, "trigger", 60, "")
+
+        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 60, 72)
 
         while True:
             self.params["Counter"] += 1
