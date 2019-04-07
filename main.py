@@ -8,6 +8,7 @@ from actions.ActionColor import ActionColor
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
 from actions.ActionColorTrigger import ActionColorTrigger
+from actions.ActionMute import ActionMute
 
 from midi_in.InputControl import InputControl
 from Color import Color
@@ -36,21 +37,23 @@ class App:
         self.inputs = []
 
         actionWhite = self.addAction(ActionColor(self.params))
-        actionGreen = self.addAction(ActionColor(self.params, Color(0, 255, 0)))
+        actionGreen = self.addAction(ActionColor(self.params))
         actionBlue = self.addAction(ActionColor(self.params, Color(0, 0, 255)))
         
         actionStrobe = self.addAction(ActionStrobe(self.params))
         actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
+        actionMute = self.addAction(ActionMute(self.params))
 
-        self.addInput(actionWhite, "hold", 48, "Val")
+        self.addInput(actionWhite, "hold", 46, "Val")
         self.addInput(actionGreen, "knob", 3, "Val")
         self.addInput(actionBlue, "knob", 4, "Val")
         self.addInput(actionStrobe, "knob", 7, "Intensity")
         self.addInput(actionStrobe, "knob", 8, "Speed")
-        self.addInput(actionStrobeMute, "hold", 51, "On")
+        self.addInput(actionStrobeMute, "hold", 47, "On")
         self.addInput(actionStrobeMute, "knob", 10, "Speed")
+        self.addInput(actionMute, "hold", 45, "On")
 
-        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 60, 72, Color.green(), Color.blue())
+        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 48, 72, Color.red(), Color.blue())
 
         while True:
             self.params["Counter"] += 1
