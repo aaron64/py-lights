@@ -1,5 +1,11 @@
 from Color import Color
 
+###
+# Action
+# Settings:
+#	Color(Color(0,0,0)) - Output color of the action
+#	MUTE(False) - Whether to mute LEDs
+###
 class Action(object):
 	def __init__(self, params, inverse=False):
 		self.inverse = inverse

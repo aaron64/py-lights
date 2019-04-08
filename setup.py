@@ -1,4 +1,11 @@
+from ActionBuilder import ActionBuilder
 
+from actions.ActionColor import ActionColor
+from actions.ActionStrobe import ActionStrobe
+from actions.ActionStrobeMute import ActionStrobeMute
+from actions.ActionColorTrigger import ActionColorTrigger
+from actions.ActionMute import ActionMute
+from actions.ActionChaos import ActionChaos
 
 def initialize_actions(app, params):
     actionWhite = app.addAction(ActionColor(params))

@@ -2,15 +2,6 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
-from ActionBuilder import ActionBuilder
-
-from actions.ActionColor import ActionColor
-from actions.ActionStrobe import ActionStrobe
-from actions.ActionStrobeMute import ActionStrobeMute
-from actions.ActionColorTrigger import ActionColorTrigger
-from actions.ActionMute import ActionMute
-from actions.ActionChaos import ActionChaos
-
 from setup import initialize_actions
 
 from midi_in.InputControl import InputControl
