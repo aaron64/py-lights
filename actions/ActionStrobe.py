@@ -1,7 +1,12 @@
 from actions.Action import Action
-
 from Color import Color
 
+###
+# ActionMuteStrobe: Displays a color in a strobe pattern
+# Settings:
+# 	Intensity(0) - Intensity of the action
+#	Speed(5) - Timeing of the strobe effect
+###
 class ActionStrobe(Action):
 	def __init__(self, params, color = Color.white()):
 		super(ActionStrobe, self).__init__(params)

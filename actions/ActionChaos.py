@@ -1,9 +1,13 @@
 from actions.Action import Action
-
 from Color import Color
 
 import random
 
+###
+# ActionChaos: Displays a strobe of random colors at random times
+# Settings:
+# 	Intensity(0) - Intensity of the action
+###
 class ActionChaos(Action):
 	def __init__(self, params):
 		super(ActionChaos, self).__init__(params)

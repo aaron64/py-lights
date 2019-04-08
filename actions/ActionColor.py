@@ -1,7 +1,11 @@
 from actions.Action import Action
-
 from Color import Color
 
+###
+# ActionColor: Displays a color
+# Settings:
+# 	Intensity(0) - Intensity of the action
+###
 class ActionColor(Action):
 	def __init__(self, params, color = Color.white()):
 		super(ActionColor, self).__init__(params)

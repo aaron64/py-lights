@@ -1,11 +1,17 @@
 from actions.Action import Action
 from Color import Color
 
+###
+# ActionColorTriggerHold: displays a color on key held (similar to ActionColorTrigger with infinite sustain)
+# Settings:
+# 	Attack(0) - Time of the actions attack
+#	Release(0) - Time of the actions release
+###
 class ActionColorTriggerHold(Action):
-	def __init__(self, params, color = Color.white()):
+	def __init__(self, params, color = Color.white(), attack=0, release=0):
 		super(ActionColorTriggerHold, self).__init__(params)
-		self.settings["Attack"] = 5
-		self.settings["Release"] = 20
+		self.settings["Attack"] = attack
+		self.settings["Release"] = release
 		self.triggerTime = 0
                 self.color = color
                 self.val = 0

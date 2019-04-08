@@ -11,6 +11,8 @@ from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
 from actions.ActionChaos import ActionChaos
 
+from setup import initialize_actions
+
 from midi_in.InputControl import InputControl
 from Color import Color
 
@@ -37,26 +39,7 @@ class App:
         self.actions = []
         self.inputs = []
 
-        actionWhite = self.addAction(ActionColor(self.params))
-        actionGreen = self.addAction(ActionColor(self.params))
-        actionBlue = self.addAction(ActionColor(self.params, Color(0, 0, 255)))
-        
-        actionStrobe = self.addAction(ActionStrobe(self.params))
-        actionStrobeMute = self.addAction(ActionStrobeMute(self.params))
-        actionMute = self.addAction(ActionMute(self.params))
-        actionChaos = self.addAction(ActionChaos(self.params))
-
-        self.addInput(actionWhite, "hold", 46, "Intensity")
-        self.addInput(actionGreen, "knob", 3, "Intensity")
-        self.addInput(actionBlue, "knob", 4, "Intensity")
-        self.addInput(actionStrobe, "knob", 7, "Intensity")
-        self.addInput(actionStrobe, "knob", 8, "Speed")
-        self.addInput(actionStrobeMute, "hold", 47, "On")
-        self.addInput(actionStrobeMute, "knob", 10, "Speed")
-        self.addInput(actionMute, "hold", 45, "On")
-        self.addInput(actionChaos, "hold", 44, "Intensity")
-
-        ActionBuilder.buildKeys(self.params, self.actions, self.inputs, 48, 72, Color.red(), Color.blue())
+        setup.add_actions(self, self.params)
 
         while True:
             self.params["Counter"] += 1

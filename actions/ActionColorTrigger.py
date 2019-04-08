@@ -1,12 +1,19 @@
 from actions.Action import Action
 from Color import Color
 
+###
+# ActionColorTrigger: displays a color on key press
+# Settings:
+# 	Attack(0) - Time of the actions attack
+#	Sustain(20) - Time of the actions sustain
+#	Release(0) - Time of the actions release
+###
 class ActionColorTrigger(Action):
-	def __init__(self, params, color = Color.white()):
+	def __init__(self, params, color = Color.white(), attack=0, sustain=20, release=0):
 		super(ActionColorTrigger, self).__init__(params)
-		self.settings["Attack"] = 5
-		self.settings["Sustain"] = 0
-		self.settings["Release"] = 20
+		self.settings["Attack"] = attack
+		self.settings["Sustain"] = sustain
+		self.settings["Release"] = release
 		self.triggerTime = 0
                 self.color = color
                 self.val = 0
