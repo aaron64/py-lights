@@ -7,7 +7,9 @@ from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
 from actions.ActionChaos import ActionChaos
 
-def initialize_actions(app, params):
+from Color import Color
+
+def initialize(app, params):
     actionWhite = app.addAction(ActionColor(params))
     actionGreen = app.addAction(ActionColor(params))
     actionBlue = app.addAction(ActionColor(params, Color(0, 0, 255)))

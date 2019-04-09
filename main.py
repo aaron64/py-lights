@@ -2,7 +2,7 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
-from setup import initialize_actions
+from setup import initialize
 
 from midi_in.InputControl import InputControl
 from Color import Color
@@ -30,7 +30,7 @@ class App:
         self.actions = []
         self.inputs = []
 
-        setup.add_actions(self, self.params)
+        initialize(self, self.params)
 
         while True:
             self.params["Counter"] += 1
