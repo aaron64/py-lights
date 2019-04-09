@@ -9,9 +9,9 @@ Py-Lights (name pending) is a program to bind MIDI inputs different effects (act
 To add actions to the program, use ```setup.py``` to add actions, then add inputs to them (see ```setup_example.py```).
 
 Inputs have 5 different modes:
-|trigger |trigger_hold |toggle  |hold  |knob  |
-|--|--|--|--|--|
-|Activated in a single instance  |Activated in an instance and while held   |(todo)  |Activated while held  |Activated when a knob is updated  |
+|trigger 					   |trigger_hold						   |toggle|trigger_hold		   |knob  							|
+|------------------------------|---------------------------------------|------|--------------------|--------------------------------|
+|Activated in a single instance|Activated in an instance and while held|(todo)|Activated while held|Activated when a knob is updated|
 
 
 A list of actions can be found here. Parameters are declared on object creation as optional parameters while settings are used for variables that can change throughout use.
