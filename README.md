@@ -1,4 +1,5 @@
 
+
 # Py-Lights
 Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to 5050 LEDs.
 
@@ -28,3 +29,6 @@ A list of actions can be found here. Parameters are declared on object creation 
 |StrobeMute      |                                                    |Speed (5)  On (0)                    |
 |Mute            |                                                    |On (0)                               |
 |Chaos           |                                                    |Intensity (0)                        |
+
+## Contributing
+Please let me know if you would like to contribute any Actions or other features! Also please inquire me about any issues or confusion in documentation.
