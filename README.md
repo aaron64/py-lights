@@ -1,3 +1,4 @@
+
 # Py-Lights
 Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to 5050 LEDs.
 
@@ -9,6 +10,7 @@ Py-Lights (name pending) is a program to bind MIDI inputs different effects (act
 To add actions to the program, use ```setup.py``` to add actions, then add inputs to them (see ```setup_example.py```).
 
 Inputs have 5 different modes:
+
 |trigger |trigger_hold |toggle  |hold  |knob  |
 |--|--|--|--|--|
 |Activated in a single instance  |Activated in an instance and while held   |(todo)  |Activated while held  |Activated when a knob is updated  |
