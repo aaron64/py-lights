@@ -1,9 +1,11 @@
 
 
+
 # Py-Lights
 Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to 5050 LEDs.
 
 ## Setup
+0. Configure hardware (I followed [this](https://dordnung.de/raspberrypi-ledstrip/](https://dordnung.de/raspberrypi-ledstrip/)) tutorial)
 1. Get [python-rtmidi](https://pypi.org/project/python-rtmidi/) ```pip install python-rtmidi```
 2. Get [pigpio](http://abyz.me.uk/rpi/pigpio/download.html) ```sudo apt-get install pigpio python-pigpio```
 
