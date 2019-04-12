@@ -32,13 +32,13 @@ class ActionColorTriggerHold(Action):
 			intensity = 0
 			timeLapsed = params["Counter"] - self.triggerTime
 			if self.state == "attack":
-				intensity = int((float(timeLapsed)/(self.settings["Attack"])) * self.val)
+				intensity = int((float(timeLapsed)/(self.settings["Attack"]+1)) * self.val)
                                 if timeLapsed >= self.settings["Attack"]:
                                     self.state = "sustain"
 			elif self.state == "sustain":
 				intensity = self.val
 			elif self.state == "release":
-				intensity = self.val - int((float(timeLapsed)/(self.settings["Release"])) * self.val)
+				intensity = self.val - int((float(timeLapsed)/(self.settings["Release"]+1)) * self.val)
                                 if timeLapsed >= self.settings["Release"]:
                                     self.state = "off"
                         else:

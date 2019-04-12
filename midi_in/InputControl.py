@@ -10,11 +10,11 @@ class InputControl:
 		self.max = maxVal
 
 	def trigger(self, params, val):
-		self.action.trigger(params, val)
+		self.action.trigger(params, self.mapVal(val))
 
-    def triggerHold(self, params, val):
-            if mapVal(val) != self.min:
-                    self.action.trigger(params, mapVal(val))
+        def triggerHold(self, params, val):
+            if self.mapVal(val) != self.min:
+                    self.action.trigger(params, self.mapVal(val))
             else:
                     self.action.release(params)
 
@@ -22,11 +22,11 @@ class InputControl:
 		pass
 
 	def hold(self, params, val):
-		self.action.updateSetting(self.setting, mapVal(val))
+		self.action.updateSetting(self.setting, self.mapVal(val))
 	
 	def knob(self, params, val):
-		self.action.updateSetting(self.setting, mapVal(val))
+		self.action.updateSetting(self.setting, self.mapVal(val))
 
-	def mapVal(val):
+	def mapVal(self, val):
 		rangeVal = self.max - self.min
 		return self.min + (float(val)/255) * rangeVal 

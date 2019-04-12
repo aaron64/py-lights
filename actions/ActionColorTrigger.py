@@ -28,12 +28,12 @@ class ActionColorTrigger(Action):
 			intensity = 0
 			timeLapsed = params["Counter"] - self.triggerTime
 			if timeLapsed < self.settings["Attack"]:
-				intensity = int((float(timeLapsed)/(self.settings["Attack"])) * self.val)
+				intensity = int((float(timeLapsed)/(self.settings["Attack"]+1)) * self.val)
 			elif timeLapsed < self.settings["Attack"] + self.settings["Sustain"]:
 				intensity = self.val
 			elif timeLapsed < self.settings["Attack"] + self.settings["Sustain"] + self.settings["Release"]:
                                 time_till_release = self.settings["Attack"] + self.settings["Sustain"]
-				intensity = self.val - int((float(timeLapsed - time_till_release)/(self.settings["Release"])) * self.val)
+				intensity = self.val - int((float(timeLapsed - time_till_release)/(self.settings["Release"]+1)) * self.val)
                         else:
 				self.triggerTime = 0
 

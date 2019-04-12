@@ -2,7 +2,7 @@ import rtmidi.midiutil as midiutil
 import time
 import pigpio
 
-from setup import initialize_actions
+from setup import initialize
 
 from midi_in.InputControl import InputControl
 from Color import Color
@@ -30,11 +30,7 @@ class App:
         self.actions = []
         self.inputs = []
 
-        setup.add_actions(self, self.params)
-
-        RED_PIN = 17
-        GREEN_PIN = 22
-        BLUE_PIN = 24
+        setup.initialize(self, self.params)
 
         # initialize gpio
         pi = pigpio.pi()
@@ -44,7 +40,7 @@ class App:
         midiin.set_callback(self)
 
         
-
+        # Main loop
         while True:
             self.params["Counter"] += 1
 
