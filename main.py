@@ -5,6 +5,7 @@ import pigpio
 from setup import initialize
 
 from midi_in.InputControl import InputControl
+from midi_in.InputLogger import InputLogger
 from Color import Color
 
 class App:
@@ -13,7 +14,9 @@ class App:
         return action
 
     def addInput(self, action, type, key, setting):
-        self.inputs.append(InputControl(action, type, key, setting))
+        midiInput = InputControl(action, type, key, setting)
+        self.inputs.append(midiInput)
+        self.inputLogger.addInput(midiInput)
 
     def main(self):
         self.params = {
@@ -26,6 +29,8 @@ class App:
             "PIN_G": 0,
             "PIN_B": 0
         }
+
+        self.inputLogger = InputLogger()
 
         self.actions = []
         self.inputs = []

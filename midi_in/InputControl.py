@@ -30,3 +30,6 @@ class InputControl:
 	def mapVal(self, val):
 		rangeVal = self.max - self.min
 		return self.min + (float(val)/255) * rangeVal 
+
+	def printEvent(self, val, type):
+		print()
