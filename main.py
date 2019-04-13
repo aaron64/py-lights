@@ -19,6 +19,8 @@ class App:
         self.inputLogger.addInput(midiInput)
 
     def main(self):
+        print("Starting py-lights...")
+
         self.params = {
             "R": 0,
             "G": 0, 
@@ -38,13 +40,15 @@ class App:
         initialize(self, self.params)
 
         # initialize gpio
+        print("Initializing GPIO")
         pi = pigpio.pi()
 
         # initialize midi
+        print("Initializing MIDI")
         midiin, port_name = midiutil.open_midiinput(1)
         midiin.set_callback(self)
 
-        
+        print("Ready...")
         # Main loop
         while True:
             self.params["Counter"] += 1
