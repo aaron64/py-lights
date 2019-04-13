@@ -5,6 +5,7 @@ import pigpio
 from setup import initialize
 
 from midi_in.InputControl import InputControl
+from midi_in.InputLogger import InputLogger
 from Color import Color
 
 class App:
@@ -13,25 +14,42 @@ class App:
         return action
 
     def addInput(self, action, type, key, setting):
-        self.inputs.append(InputControl(action, type, key, setting))
+        midiInput = InputControl(action, type, key, setting)
+        self.inputs.append(midiInput)
+        self.inputLogger.addInput(midiInput)
 
     def main(self):
-        RED_PIN = 17
-        GREEN_PIN = 22
-        BLUE_PIN = 24
+        print("Starting py-lights...")
 
-        self.params = {"R": 0, "G": 0, "B": 0, "MAX": 255, "Counter": 1}
+        self.params = {
+            "R": 0,
+            "G": 0, 
+            "B": 0, 
+            "MAX": 255, 
+            "Counter": 1,
+            "PIN_R": 0,
+            "PIN_G": 0,
+            "PIN_B": 0
+        }
 
-        pi = pigpio.pi()
-
-        midiin, port_name = midiutil.open_midiinput(1)
-        midiin.set_callback(self)
+        self.inputLogger = InputLogger()
 
         self.actions = []
         self.inputs = []
 
         initialize(self, self.params)
 
+        # initialize gpio
+        print("Initializing GPIO")
+        pi = pigpio.pi()
+
+        # initialize midi
+        print("Initializing MIDI")
+        midiin, port_name = midiutil.open_midiinput(1)
+        midiin.set_callback(self)
+
+        print("Ready...")
+        # Main loop
         while True:
             self.params["Counter"] += 1
 
@@ -54,9 +72,9 @@ class App:
             self.params["G"] = min(self.params["G"], self.params["MAX"])
             self.params["B"] = min(self.params["B"], self.params["MAX"])
 
-            pi.set_PWM_dutycycle(RED_PIN, self.params["R"] * self.params["VISIBILITY"])
-            pi.set_PWM_dutycycle(GREEN_PIN, self.params["G"] * self.params["VISIBILITY"])
-            pi.set_PWM_dutycycle(BLUE_PIN, self.params["B"] * self.params["VISIBILITY"])
+            pi.set_PWM_dutycycle(self.params["PIN_R"], self.params["R"] * self.params["VISIBILITY"])
+            pi.set_PWM_dutycycle(self.params["PIN_G"], self.params["G"] * self.params["VISIBILITY"])
+            pi.set_PWM_dutycycle(self.params["PIN_B"], self.params["B"] * self.params["VISIBILITY"])
 
             time.sleep(0.01)
 

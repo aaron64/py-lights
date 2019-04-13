@@ -1,9 +1,11 @@
 
 
+
 # Py-Lights
 Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to 5050 LEDs.
 
 ## Setup
+0. Configure hardware (I followed [this](https://dordnung.de/raspberrypi-ledstrip/](https://dordnung.de/raspberrypi-ledstrip/)) tutorial)
 1. Get [python-rtmidi](https://pypi.org/project/python-rtmidi/) ```pip install python-rtmidi```
 2. Get [pigpio](http://abyz.me.uk/rpi/pigpio/download.html) ```sudo apt-get install pigpio python-pigpio```
 
@@ -27,8 +29,12 @@ A list of actions can be found here. Parameters are declared on object creation 
 |ColorTriggerHold|Color (white)  Attack (0)   Release (0)             |Attack (0)  Release (0)              |
 |Strobe          |Color (white)                                       |Intensity (0)  Speed (5)             |
 |StrobeMute      |                                                    |Speed (5)  On (0)                    |
+|StrobeTap       |Color (white)                                       |Intensity (0)                        |
 |Mute            |                                                    |On (0)                               |
 |Chaos           |                                                    |Intensity (0)                        |
+
+## Running
+To run, simply use the command ```sh init.sh```
 
 ## Contributing
 Please let me know if you would like to contribute any Actions or other features! Also please inquire me about any issues or confusion in documentation.
