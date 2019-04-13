@@ -7,5 +7,5 @@ class InputLogger():
 	def addInput(self, midiInput):
 		self.inputs.append(midiInput)
 
-	def print(self):
+	def printPage(self):
 		os.system("cls" if os.nam=="nt" else "clear")
