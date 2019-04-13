@@ -35,7 +35,7 @@ class App:
         self.actions = []
         self.inputs = []
 
-        setup.initialize(self, self.params)
+        initialize(self, self.params)
 
         # initialize gpio
         pi = pigpio.pi()

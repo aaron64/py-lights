@@ -10,6 +10,7 @@ class ActionStrobeTap(Action):
 	def __init__(self, params, color = Color.white()):
 		super(ActionStrobeTap, self).__init__(params)
 		self.settings["Intensity"] = 0
+		self.taps = 0
 		self.rate = 0
 		self.taps = 0
 		self.countAtTap = 0
