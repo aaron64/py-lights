@@ -11,6 +11,7 @@ class ActionStrobeTap(Action):
 		super(ActionStrobeTap, self).__init__(params)
 		self.settings["Intensity"] = 0
 		self.rate = 0
+		self.taps = 0
 		self.countAtTap = 0
 		self.color = color
 
@@ -24,8 +25,8 @@ class ActionStrobeTap(Action):
 		self.settings["Color"].b = int(self.color.b * (float(out)/255))
 
 	def trigger(self, params, val):
-		self.rate += 1
-		if self.rate%2 == 0:
-			rate = params["Counter"] - self.countAtTap
+		self.taps += 1
+		if self.taps%2 == 0:
+			self.rate = params["Counter"] - self.countAtTap
 		else:
 			self.countAtTap = params["Counter"]
