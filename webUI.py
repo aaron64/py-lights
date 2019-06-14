@@ -3,14 +3,13 @@ from flask import render_template
 
 import threading
 
-data = 'foo'
 webUI = Flask(__name__)
-data = {}
 
 @webUI.route("/")
 def main():
-	return render_template('index.html', actions=data.actions)
+	return render_template('index.html', data=data)
 
-def initialize_ui(app):
-	data = app
+def initialize_ui(d):
+	global data
+	data = d
 	threading.Thread(target=webUI.run(host='0.0.0.0', port=5000)).start()

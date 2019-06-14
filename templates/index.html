@@ -13,7 +13,13 @@
 hello world!
 <div>	
 	<table class="table-actions">
-		{{actions}}
+		{% for row in data.actions %}
+			<tr>
+				{% for setting, value in row.settings.items() %}
+					<td>{{ setting }}: {{ value }}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
 	</table>
 </div>
 </body>
