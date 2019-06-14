@@ -2,13 +2,11 @@ from flask import Flask
 import threading
 
 data = 'foo'
+webUI = Flask(__name__)
 
-@app.route("/")
+@webUI.route("/")
 def main():
 	return data
 
-def initialize_ui():
-	app = Flask(__name__)
-
-if __name__ == "__main__":
-	threading.Thread(target=app.run).start()
+def initialize_ui(app):
+	threading.Thread(target=webUI.run(host='0.0.0.0', port=5000)).start()
