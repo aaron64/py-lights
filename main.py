@@ -3,6 +3,7 @@ import time
 import pigpio
 
 from setup import initialize
+from webUI import initialize_ui
 
 from midi_in.InputControl import InputControl
 from midi_in.InputLogger import InputLogger
@@ -37,6 +38,7 @@ class App:
         self.actions = []
         self.inputs = []
 
+        # initialize actions, bindings
         initialize(self, self.params)
 
         # initialize gpio
@@ -47,6 +49,9 @@ class App:
         print("Initializing MIDI")
         midiin, port_name = midiutil.open_midiinput(1)
         midiin.set_callback(self)
+
+        # initialize web UI
+        initialize_ui(self)
 
         print("Ready...")
         # Main loop
