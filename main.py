@@ -67,9 +67,9 @@ class App:
                 action.update(self.params)
 
             for action in self.actions:
-                self.params["R"] += action.settings["Color"].r
-                self.params["G"] += action.settings["Color"].g
-                self.params["B"] += action.settings["Color"].b
+                self.params["R"] += action.outputColor.r
+                self.params["G"] += action.outputColor.g
+                self.params["B"] += action.outputColor.b
                 if action.settings["MUTE"] == True:
                     self.params["VISIBILITY"] = 0
 

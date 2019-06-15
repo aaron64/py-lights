@@ -11,9 +11,9 @@ class Action(object):
 		self.inverse = inverse
 		self.settings = {
 			"Name": name,
-			"Color": Color(0,0,0),
 			"MUTE": False
 		};
+		self.outputColor = Color(0,0,0)
 
 	def getR(self):
 		return self.settings["R"]
