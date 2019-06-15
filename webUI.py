@@ -6,7 +6,7 @@ webUI = Flask(__name__)
 
 @webUI.route("/")
 def main():
-	return data
+	return render_template('index.html')
 
 def initialize_ui(app):
 	threading.Thread(target=webUI.run(host='0.0.0.0', port=5000)).start()
