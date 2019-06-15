@@ -7,7 +7,7 @@ import requests
 ###
 class ActionHttpGet(Action):
 	def __init__(self, params, url):
-		super(ActionHttpGet, "HTTP Get", self).__init__(params)
+		super(ActionHttpGet, self).__init__(params, "HTTP Get")
 		self.url = url
 
 	def trigger(self, params, val):

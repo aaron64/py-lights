@@ -8,7 +8,7 @@ from Color import Color
 ###
 class ActionStrobeTap(Action):
 	def __init__(self, params, color = Color.white()):
-		super(ActionStrobeTap, "Strobe Tap", self).__init__(params)
+		super(ActionStrobeTap, self).__init__(params, "Strobe Tap")
 		self.settings["Intensity"] = 0
 		self.taps = 0
 		self.rate = 0

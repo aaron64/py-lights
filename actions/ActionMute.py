@@ -7,7 +7,7 @@ from actions.Action import Action
 ###
 class ActionMute(Action):
 	def __init__(self, params):
-		super(ActionMute, "Mute", self).__init__(params)
+		super(ActionMute, self).__init__(params, "Mute")
 		self.settings["On"] = 0
 
 	def update(self, params):

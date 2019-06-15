@@ -8,7 +8,7 @@ from Color import Color
 ###
 class ActionColor(Action):
 	def __init__(self, params, color = Color.white()):
-		super(ActionColor, "Color", self).__init__(params)
+		super(ActionColor, self).__init__(params, "Color")
 		self.settings["Intensity"] = 0
 		self.color = color
 

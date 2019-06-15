@@ -10,7 +10,7 @@ from Color import Color
 ###
 class ActionColorTrigger(Action):
 	def __init__(self, params, color = Color.white(), attack=0, sustain=20, release=0):
-		super(ActionColorTrigger, "Color Trigger", self).__init__(params)
+		super(ActionColorTrigger, self).__init__(params, "Color Trigger")
 		self.settings["Attack"] = attack
 		self.settings["Sustain"] = sustain
 		self.settings["Release"] = release
