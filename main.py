@@ -70,7 +70,7 @@ class App:
                 self.params["R"] += action.outputColor.r
                 self.params["G"] += action.outputColor.g
                 self.params["B"] += action.outputColor.b
-                if action.settings["MUTE"] == True:
+                if action.mute:
                     self.params["VISIBILITY"] = 0
 
             self.params["R"] = min(self.params["R"], self.params["MAX"])

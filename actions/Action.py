@@ -10,10 +10,9 @@ class Action(object):
 	def __init__(self, params, name, inverse=False):
 		self.inverse = inverse
 		self.name = name
-		self.settings = {
-			"MUTE": False
-		};
+		self.settings = {};
 		self.outputColor = Color(0,0,0)
+		self.mute = False
 
 	def __unicode__(self):
 		return u"" + self.name

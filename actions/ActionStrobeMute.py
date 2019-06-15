@@ -18,6 +18,6 @@ class ActionStrobeMute(Action):
 			mute = True
 
 		if mute and self.settings["On"] > 127:
-			self.settings["MUTE"] = True
+			self.mute = True
 		else:
-			self.settings["MUTE"] = False
+			self.mute = False
