@@ -7,9 +7,10 @@ from Color import Color
 #	MUTE(False) - Whether to mute LEDs
 ###
 class Action(object):
-	def __init__(self, params, inverse=False):
+	def __init__(self, params, name, inverse=False):
 		self.inverse = inverse
 		self.settings = {
+			"Name": name,
 			"Color": Color(0,0,0),
 			"MUTE": False
 		};

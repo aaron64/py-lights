@@ -9,7 +9,7 @@ from Color import Color
 ###
 class ActionStrobe(Action):
 	def __init__(self, params, color = Color.white()):
-		super(ActionStrobe, self).__init__(params)
+		super(ActionStrobe, "Strobe", self).__init__(params)
 		self.settings["Intensity"] = 0
 		self.settings["Speed"] = 5
 		self.color = color

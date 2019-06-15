@@ -10,7 +10,7 @@ import random
 ###
 class ActionChaos(Action):
 	def __init__(self, params):
-		super(ActionChaos, self).__init__(params)
+		super(ActionChaos, "Chaos", self).__init__(params)
 		self.settings["Intensity"] = 0
 
 		self.counter = 0

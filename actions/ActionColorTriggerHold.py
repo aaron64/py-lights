@@ -9,7 +9,7 @@ from Color import Color
 ###
 class ActionColorTriggerHold(Action):
 	def __init__(self, params, color = Color.white(), attack=0, release=0):
-		super(ActionColorTriggerHold, self).__init__(params)
+		super(ActionColorTriggerHold, "Color Trigger Hold", self).__init__(params)
 		self.settings["Attack"] = attack
 		self.settings["Release"] = release
 		self.triggerTime = 0

@@ -8,7 +8,7 @@ from actions.Action import Action
 ###
 class ActionStrobeMute(Action):
 	def __init__(self, params):
-		super(ActionStrobeMute, self).__init__(params)
+		super(ActionStrobeMute, "Strobe Mute", self).__init__(params)
 		self.settings["Speed"] = 5
 		self.settings["On"] = 0
 
