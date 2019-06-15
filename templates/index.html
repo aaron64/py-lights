@@ -21,7 +21,15 @@ hello world!
 				{% endfor %}
 			</tr>
 		{% endfor %}
+		<tr><td><button>Apply Changes (ctrl + s)</button></td></tr>
+
 	</table>
+	<table class="table-inputs">
+		{% for row in data.inputs %}
+			<tr>
+				<td>{{ row.action }}</td>
+			</tr>
+		{% endfor %}
 </div>
 </body>
 </html>

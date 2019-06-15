@@ -15,6 +15,9 @@ class Action(object):
 		};
 		self.outputColor = Color(0,0,0)
 
+	def __unicode__(self):
+		return u"" + self.name
+
 	def getR(self):
 		return self.settings["R"]
 
