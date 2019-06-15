@@ -17,7 +17,13 @@ hello world!
 			<tr>
 				<td>Name: {{ row.name }}</td>
 				{% for setting, value in row.settings.items() %}
-					<td>{{ setting }}: <input type="text", name="a", value="{{ value }}"></td>
+					<td>{{ setting }}: 
+					{% if value is number %}
+						<input type="range" value="{{ value }}">
+					{% else %}
+						<input type="text", name="a", min="{{ data.params.MIN }}", max="{{ data.params.MAX }}" value="{{ value }}">
+					{% endif %}
+					</td>
 				{% endfor %}
 			</tr>
 		{% endfor %}

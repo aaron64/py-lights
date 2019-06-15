@@ -26,6 +26,7 @@ class App:
             "R": 0,
             "G": 0, 
             "B": 0, 
+            "MIN": 0,
             "MAX": 255, 
             "Counter": 1,
             "PIN_R": 0,
