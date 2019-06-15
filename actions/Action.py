@@ -9,8 +9,8 @@ from Color import Color
 class Action(object):
 	def __init__(self, params, name, inverse=False):
 		self.inverse = inverse
+		self.name = name
 		self.settings = {
-			"Name": name,
 			"MUTE": False
 		};
 		self.outputColor = Color(0,0,0)

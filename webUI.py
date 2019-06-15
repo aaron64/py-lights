@@ -7,7 +7,6 @@ webUI = Flask(__name__)
 
 @webUI.route("/")
 def main():
-	print(data.actions[0].settings["Color"])
 	return render_template('index.html', data=data)
 
 def initialize_ui(d):

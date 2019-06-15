@@ -15,6 +15,7 @@ hello world!
 	<table class="table-actions">
 		{% for row in data.actions %}
 			<tr>
+				<td>Name: {{ row.name }}</td>
 				{% for setting, value in row.settings.items() %}
 					<td>{{ setting }}: <input type="text", name="a", value="{{ value }}"></td>
 				{% endfor %}
