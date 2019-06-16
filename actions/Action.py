@@ -13,6 +13,7 @@ class Action(object):
 		self.settings = {};
 		self.outputColor = Color(0,0,0)
 		self.mute = False
+		self.inputs = []
 
 	def __unicode__(self):
 		return u"" + self.name
@@ -37,3 +38,6 @@ class Action(object):
 
 	def release(self, params):
 		pass
+
+	def addInput(self, input):
+		self.inputs.append(input)

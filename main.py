@@ -16,6 +16,7 @@ class App:
 
     def addInput(self, action, type, key, setting):
         midiInput = InputControl(action, type, key, setting)
+        action.addInput(midiInput)
         self.inputs.append(midiInput)
         self.inputLogger.addInput(midiInput)
 

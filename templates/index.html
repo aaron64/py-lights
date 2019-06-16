@@ -5,37 +5,75 @@
 	<meta charset="utf-8">
 	<title>Py-Lights UI</title>
     <link rel="stylesheet" href= "{{ url_for('static',filename='bootstrap.min.css') }}">
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
-hello world!
-<div>	
-	<table class="table-actions">
-		{% for row in data.actions %}
-			<tr>
-				<td>Name: {{ row.name }}</td>
-				{% for setting, value in row.settings.items() %}
-					<td>{{ setting }}: 
-					{% if value is number %}
-						<input type="range" value="{{ value }}">
-					{% else %}
-						<input type="text", name="a", min="{{ data.params.MIN }}", max="{{ data.params.MAX }}" value="{{ value }}">
-					{% endif %}
+<h1>Py-Lights</h1>
+<hr class="alert-primary">
+<div class="container pt-5">	
+	<div class="row">
+		<table class="table-actions table-bordered table-hover">
+			{% for row in data.actions %}
+				<tr>
+					<th class="table-info"><h4>{{ row.name }}</h4></th>
+				</tr>
+				<th></th><th class="pl-2 pr-2">Action</th><th class="pl-2 pr-2">Type</th><th class="pl-2 pr-2">Key</th><th class="pl-2 pr-2">Setting</th><th class="pl-2 pr-2">Inverted</th><th class="pl-2 pr-2">Min</th><th class="pl-2 pr-2">Max</th>	
+				{% for input in row.inputs %}
+				<tr>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="pl-2 pr-2">{{ input.action }}</td>
+					<td class="pl-2 pr-2">
+						<div class="dropdown">
+							<button type="button" class="btn btn-primary dropdown-toggle pt-0 pb-0" data-toggle="dropdown">
+							{{ input.type }}
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">hold</a>
+								<a class="dropdown-item" href="#">knob</a>
+								<a class="dropdown-item" href="#">trigger</a>
+								<a class="dropdown-item" href="#">trigger_hold</a>
+							</div>
+						</div>
 					</td>
+					<td class="pl-2 pr-2">{{ input.key }}</td>
+					<td class="pl-2 pr-2">
+						<div class="dropdown">
+							<button type="button" class="btn btn-primary dropdown-toggle pt-0 pb-0" data-toggle="dropdown">
+							{{ input.setting }}
+							</button>
+							<div class="dropdown-menu">
+								{% for setting in input.action.settings %}
+									<a class="dropdown-item" href="#">{{ setting }}</a>
+								{% endfor %}
+							</div>
+						</div>
+					</td>
+					<td class="pl-2 pr-2">
+						<div class="dropdown">
+							<button type="button" class="btn btn-primary dropdown-toggle pt-0 pb-0" data-toggle="dropdown">
+							{{ input.inverse }}
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">True</a>
+								<a class="dropdown-item" href="#">False</a>
+							</div>
+						</div>
+					</td>
+					<td class="pl-2 pr-2">{{ input.min }}</td>
+					<td class="pl-2 pr-2">{{ input.max }}</td>
+				</tr>
 				{% endfor %}
-			</tr>
-		{% endfor %}
-		<tr><td><button>Apply Changes (ctrl + s)</button></td></tr>
+			{% endfor %}
+			<tr><td><button>Apply Changes (ctrl + s)</button></td></tr>
 
-	</table>
-	<table class="table-inputs">
-		{% for row in data.inputs %}
-			<tr>
-				<td>{{ row.action }}</td>
-			</tr>
-		{% endfor %}
+		</table>
+	</div>
 </div>
 </body>
 </html>
