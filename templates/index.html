@@ -15,19 +15,16 @@
 <h1>Py-Lights</h1>
 <hr class="alert-primary">
 <div class="container pt-5">	
-	<div class="row">
-		<table class="table-actions table-bordered table-hover">
-			{% for row in data.actions %}
-				<tr>
-					<th class="table-info"><h4>{{ row.name }}</h4></th>
-				</tr>
-				<th></th><th class="pl-2 pr-2">Action</th><th class="pl-2 pr-2">Type</th><th class="pl-2 pr-2">Key</th><th class="pl-2 pr-2">Setting</th><th class="pl-2 pr-2">Inverted</th><th class="pl-2 pr-2">Min</th><th class="pl-2 pr-2">Max</th>	
+	<div>
+		{% for row in data.actions %}
+		<div class="bg-primary">
+		<h4>{{ row.name }}</h4>
+			<table class="table-actions table-hover mb-4 ml-3">
+				<th class="pl-2 pr-2">Type</th><th class="pl-2 pr-2">Key</th><th class="pl-2 pr-2">Setting</th><th class="pl-2 pr-2">Inverted</th><th class="pl-2 pr-2">Min</th><th class="pl-2 pr-2">Max</th>	
 				{% for input in row.inputs %}
 				<tr>
 				</tr>
 				<tr>
-					<td></td>
-					<td class="pl-2 pr-2">{{ input.action }}</td>
 					<td class="pl-2 pr-2">
 						<div class="dropdown">
 							<button type="button" class="btn btn-primary dropdown-toggle pt-0 pb-0" data-toggle="dropdown">
@@ -69,10 +66,9 @@
 					<td class="pl-2 pr-2">{{ input.max }}</td>
 				</tr>
 				{% endfor %}
-			{% endfor %}
-			<tr><td><button>Apply Changes (ctrl + s)</button></td></tr>
-
-		</table>
+			</table>
+		</div>
+		{% endfor %}
 	</div>
 </div>
 </body>
