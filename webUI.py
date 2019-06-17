@@ -12,4 +12,4 @@ def main():
 def initialize_ui(d):
 	global data
 	data = d
-	threading.Thread(target=webUI.run(host='0.0.0.0', port=5000)).start()
+	threading.Thread(target=webUI.run(debug=False, host='0.0.0.0', port=5000)).start()
