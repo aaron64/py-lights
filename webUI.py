@@ -10,11 +10,17 @@ def main():
 	return render_template('index.html', data=data)
 
 @webUI.route('/', methods=['POST'])
-def my_form_post():
-    print(request.form)
-    return render_template('index.html', data=data)
+def post():
+	print(request)
+	print(request.get_json())
+
+	return render_template('index.html', data=data)
 
 def initialize_ui(d):
 	global data
 	data = d
-	threading.Thread(target=webUI.run(debug=False, host='0.0.0.0', port=5000)).start()
+	t = threading.Thread(target=webUI.run, kwargs={"debug":False, "host":'0.0.0.0', "port":5000})
+	t.start()
+
+if __name__ == "__main__":
+	pass
