@@ -7,7 +7,8 @@ Py-Lights (name pending) is a program to bind MIDI inputs different effects (act
 ## Setup
 0. Configure hardware (I followed [this](https://dordnung.de/raspberrypi-ledstrip/](https://dordnung.de/raspberrypi-ledstrip/)) tutorial)
 1. Get [python-rtmidi](https://pypi.org/project/python-rtmidi/) ```pip install python-rtmidi```
-2. Get [pigpio](http://abyz.me.uk/rpi/pigpio/download.html) ```sudo apt-get install pigpio python-pigpio```
+2. Get [flask](http://flask.pocoo.org/) ```pip install Flask```
+3. Get [pigpio](http://abyz.me.uk/rpi/pigpio/download.html) ```sudo apt-get install pigpio python-pigpio```
 
 ## Creating your action setup
 To add actions to the program, use ```setup.py``` to add actions, then add inputs to them (see ```setup_example.py```).
