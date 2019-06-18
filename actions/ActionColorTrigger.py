@@ -14,13 +14,14 @@ class ActionColorTrigger(Action):
 		self.settings["Attack"] = attack
 		self.settings["Sustain"] = sustain
 		self.settings["Release"] = release
+		self.parameters["Color"] = color
+		
 		self.triggerTime = 0
-                self.color = color
-                self.val = 0
+		self.val = 0
 
 	def trigger(self, params, val):
 		self.triggerTime = params["Counter"]
-                self.val = val
+		self.val = val
 
 	def update(self, params):
 		if self.triggerTime != 0:
@@ -37,6 +38,6 @@ class ActionColorTrigger(Action):
                         else:
 				self.triggerTime = 0
 
-			self.outputColor.r = int(self.color.r * (float(intensity)/255))
-			self.outputColor.g = int(self.color.g * (float(intensity)/255))
-			self.outputColor.b = int(self.color.b * (float(intensity)/255))
+			self.outputColor.r = int(self.parameters["Color"].r * (float(intensity)/255))
+			self.outputColor.g = int(self.parameters["Color"].g * (float(intensity)/255))
+			self.outputColor.b = int(self.parameters["Color"].b * (float(intensity)/255))
