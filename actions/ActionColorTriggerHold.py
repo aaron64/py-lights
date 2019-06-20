@@ -42,8 +42,8 @@ class ActionColorTriggerHold(Action):
 				intensity = self.val - int((float(timeLapsed)/(self.settings["Release"]+1)) * self.val)
 				if timeLapsed >= self.settings["Release"]:
 					self.state = "off"
-				else:
-					self.triggerTime = 0
+			else:
+				self.triggerTime = 0
 
 			self.outputColor.r = int(self.parameters["Color"].r * (float(intensity)/255))
 			self.outputColor.g = int(self.parameters["Color"].g * (float(intensity)/255))

@@ -20,6 +20,7 @@ def initialize_ui(d):
 	global data
 	data = d
 	t = threading.Thread(target=webUI.run, kwargs={"debug":False, "host":'0.0.0.0', "port":8085})
+	t.daemon = True
 	t.start()
 
 if __name__ == "__main__":
