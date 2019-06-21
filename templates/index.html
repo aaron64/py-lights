@@ -21,13 +21,6 @@
 		<h4>{{ row.name }}</h4>
 			<form method="POST">
 				<table class="table-actions table-hover mb-4 ml-3">
-					<tr>
-					<td>
-							{% for parameter, val in row.parameters.items() %}
-							{{ val.getHTMLParameterTemplate()|safe }}
-							{% endfor %}
-						</td>
-					</tr>
 					<th class="pl-2 pr-2">Type</th>
 					<th class="pl-2 pr-2">Key</th>
 					<th class="pl-2 pr-2">Setting</th>
@@ -40,6 +33,7 @@
 					<tr>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
+								<div name="hi">uh hi</div>
 								<select class="form-control" name="trigger">
 									<option
 									{% if (input.type == "hold") %} selected="selected" {% endif %}
@@ -58,7 +52,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="key">
 									{% for i in range(128) %}
 									<option
 									{% if (input.key == i) %} selected="selected" {% endif %}
@@ -69,7 +63,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="setting">
 									{% for setting in input.action.settings %}
 									<option
 									{% if (input.setting == setting) %} selected="selected" {% endif %}
@@ -80,7 +74,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="inverted">
 									<option
 									{% if (input.inverse == "True") %} selected="selected" {% endif %}
 									>True</option>
