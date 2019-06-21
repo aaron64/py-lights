@@ -1,6 +1,7 @@
 import rtmidi.midiutil as midiutil
 import time
 import pigpio
+import uuid
 
 from setup import initialize
 from webUI import initialize_ui
@@ -11,13 +12,13 @@ from Color import Color
 
 class App:
     def addAction(self, action):
-        self.actions.append(action)
+        self.actions[uuid.uuid4().hex] = action
         return action
 
     def addInput(self, action, type, key, setting):
         midiInput = InputControl(action, type, key, setting)
         action.addInput(midiInput)
-        self.inputs.append(midiInput)
+        self.inputs[uuid.uuid4().hex] = midiInput
         self.inputLogger.addInput(midiInput)
 
     def main(self):
@@ -37,8 +38,8 @@ class App:
 
         self.inputLogger = InputLogger()
 
-        self.actions = []
-        self.inputs = []
+        self.actions = {}
+        self.inputs = {}
 
         # initialize actions, bindings
         initialize(self, self.params)
@@ -65,10 +66,10 @@ class App:
             self.params["B"] = 0
             self.params["VISIBILITY"] = 1
             
-            for action in self.actions:
+            for key, action in self.actions.items():
                 action.update(self.params)
 
-            for action in self.actions:
+            for key, action in self.actions.items():
                 self.params["R"] += action.outputColor.r
                 self.params["G"] += action.outputColor.g
                 self.params["B"] += action.outputColor.b
@@ -95,7 +96,7 @@ class App:
         key = message[1]
         state = message[2] * 2
 
-        for midiInput in self.inputs:
+        for key, midiInput in self.inputs.items():
             if(midiInput.key == key):
                 if(midiInput.type == "trigger" and state != 0 ):
                     midiInput.trigger(self.params, state)
