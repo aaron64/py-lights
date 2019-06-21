@@ -15,8 +15,8 @@ class App:
         self.actions[uuid.uuid4().hex] = action
         return action
 
-    def addInput(self, action, type, key, setting):
-        midiInput = InputControl(action, type, key, setting)
+    def addInput(self, action, _type, key, setting):
+        midiInput = InputControl(action, _type, key, setting)
         action.addInput(midiInput)
         self.inputs[uuid.uuid4().hex] = midiInput
         self.inputLogger.addInput(midiInput)
