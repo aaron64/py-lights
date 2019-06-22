@@ -14,7 +14,7 @@ class ActionStrobeMute(Action):
 
 	def update(self, params):
 		mute = False
-		if (params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
+		if int(params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
 			mute = True
 
 		if mute and self.settings["On"] > 127:

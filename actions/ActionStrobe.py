@@ -16,7 +16,7 @@ class ActionStrobe(Action):
 
 	def update(self, params):
 		out = 0
-		if (params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
+		if int(params["Counter"]/(self.settings["Speed"]+1))%2 == 1:
 			out = self.settings["Intensity"]
 		
 		self.outputColor.r = int(self.parameters["Color"].r * (float(out)/255))

@@ -16,7 +16,7 @@
 <hr class="alert-primary">
 <div class="container pt-5">	
 	<div>
-		{% for row in data.actions %}
+		{% for key, row in data.actions.items %}
 		<div class="bg-primary">
 		<h4>{{ row.name }}</h4>
 			<form method="POST">
@@ -27,12 +27,13 @@
 					<th class="pl-2 pr-2">Inverted</th>
 					<th class="pl-2 pr-2">Min</th>
 					<th class="pl-2 pr-2">Max</th>	
-					{% for input in row.inputs %}
+					{% for key, input in row.inputs.items() %}
 					<tr>
 					</tr>
 					<tr>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
+								<input type="hidden" name="key" value="{{ key }}">
 								<select class="form-control" name="trigger">
 									<option
 									{% if (input.type == "hold") %} selected="selected" {% endif %}
@@ -51,7 +52,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="key">
 									{% for i in range(128) %}
 									<option
 									{% if (input.key == i) %} selected="selected" {% endif %}
@@ -62,7 +63,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="setting">
 									{% for setting in input.action.settings %}
 									<option
 									{% if (input.setting == setting) %} selected="selected" {% endif %}
@@ -73,7 +74,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control">
+								<select class="form-control" name="inverted">
 									<option
 									{% if (input.inverse == "True") %} selected="selected" {% endif %}
 									>True</option>

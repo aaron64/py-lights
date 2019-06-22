@@ -1,3 +1,4 @@
+
 import random
 
 
@@ -12,6 +13,11 @@ class Color():
 	def __unicode__(self):
 		return u"" + str(self.r) + "," + str(self.g) + "," + str(self.b)
 
+	def getHTMLParameterTemplate(self): 
+		return ("<input type='range' class='custom-range' style='background-color: red !important;' value=" + str(self.r) + "/>" 
+		"<input type='range' class='custom-range' style='background-color: green !important;' value=" + str(self.g) + "/>"
+		"<input type='range' class='custom-range' style='background-color: blue !important;' value=" + str(self.b) + "/>")
+	
 	@classmethod
 	def interpolate(cls, col1, col2, val):
 		r = int((col2.r - col1.r) * val + col1.r)
