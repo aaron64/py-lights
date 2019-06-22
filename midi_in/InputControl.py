@@ -1,8 +1,9 @@
 
 class InputControl:
-	def __init__(self, action, type, key, setting, inverse=False, minVal=0, maxVal=255):
+	def __init__(self, _id, action, _type, key, setting, inverse=False, minVal=0, maxVal=255):
+		self.id = _id
 		self.action = action
-		self.type = type
+		self.type = _type
 		self.inverse = inverse
 		self.key = key
 		self.setting = setting
@@ -12,11 +13,11 @@ class InputControl:
 	def trigger(self, params, val):
 		self.action.trigger(params, self.mapVal(val))
 
-        def triggerHold(self, params, val):
-            if self.mapVal(val) != self.min:
-                    self.action.trigger(params, self.mapVal(val))
-            else:
-                    self.action.release(params)
+	def triggerHold(self, params, val):
+		if self.mapVal(val) != self.min:
+			self.action.trigger(params, self.mapVal(val))
+		else:
+			self.action.release(params)
 
 	def toggle(self, params):
 		pass

@@ -16,7 +16,7 @@
 <hr class="alert-primary">
 <div class="container pt-5">	
 	<div>
-		{% for key, row in data.actions.items %}
+		{% for key, row in data.actions.items() %}
 		<div class="bg-primary">
 		<h4>{{ row.name }}</h4>
 			<form method="POST">
@@ -27,14 +27,14 @@
 					<th class="pl-2 pr-2">Inverted</th>
 					<th class="pl-2 pr-2">Min</th>
 					<th class="pl-2 pr-2">Max</th>	
-					{% for key, input in row.inputs.items() %}
+					{% for input in row.inputs %}
 					<tr>
 					</tr>
 					<tr>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<input type="hidden" name="key" value="{{ key }}">
-								<select class="form-control" name="trigger">
+								<input type="hidden" name="id" value="{{ input.id }}">
+								<select class="form-control" name="type">
 									<option
 									{% if (input.type == "hold") %} selected="selected" {% endif %}
 									>hold</option>
@@ -74,7 +74,7 @@
 						</td>
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<select class="form-control" name="inverted">
+								<select class="form-control" name="inverse">
 									<option
 									{% if (input.inverse == "True") %} selected="selected" {% endif %}
 									>True</option>
