@@ -1,8 +1,9 @@
 
 class InputControl:
-	def __init__(self, action, type, key, setting, inverse=False, minVal=0, maxVal=255):
+	def __init__(self, _id, action, _type, key, setting, inverse=False, minVal=0, maxVal=255):
+		self.id = _id
 		self.action = action
-		self.type = type
+		self.type = _type
 		self.inverse = inverse
 		self.key = key
 		self.setting = setting

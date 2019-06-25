@@ -16,9 +16,9 @@ class App:
         return action
 
     def addInput(self, action, _type, key, setting):
-        midiInput = InputControl(action, _type, key, setting)
+        midiInput = InputControl(uuid.uuid4().hex, action, _type, key, setting)
         action.addInput(midiInput)
-        self.inputs[uuid.uuid4().hex] = midiInput
+        self.inputs[midiInput.id] = midiInput
         self.inputLogger.addInput(midiInput)
 
     def main(self):
@@ -66,10 +66,10 @@ class App:
             self.params["B"] = 0
             self.params["VISIBILITY"] = 1
             
-            for key, action in self.actions.items():
+            for _id, action in self.actions.items():
                 action.update(self.params)
 
-            for key, action in self.actions.items():
+            for _id, action in self.actions.items():
                 self.params["R"] += action.outputColor.r
                 self.params["G"] += action.outputColor.g
                 self.params["B"] += action.outputColor.b
@@ -96,7 +96,7 @@ class App:
         key = message[1]
         state = message[2] * 2
 
-        for key, midiInput in self.inputs.items():
+        for _id, midiInput in self.inputs.items():
             if(midiInput.key == key):
                 if(midiInput.type == "trigger" and state != 0 ):
                     midiInput.trigger(self.params, state)
