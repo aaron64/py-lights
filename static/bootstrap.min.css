@@ -9979,15 +9979,6 @@ a.text-dark:hover {
     border-color: rgba(0, 0, 0, .6)
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    text-shadow: -1px -1px 0 rgba(0, 0, 0, .3)
-}
-
 .table-danger,
 .table-info,
 .table-primary,
