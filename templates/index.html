@@ -16,7 +16,7 @@
 <hr class="alert-primary">
 <div class="container pt-5">	
 	<div>
-		{% for key, row in data.actions.items %}
+		{% for key, row in data.actions.items() %}
 		<div class="bg-primary">
 		<h4>{{ row.name }}</h4>
 			<form method="POST">
