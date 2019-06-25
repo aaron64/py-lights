@@ -15,10 +15,8 @@ def post():
 
 	data.inputs[_id].type = request.form["type"].decode("utf8")
 	data.inputs[_id].key = int(request.form["key"].decode("utf8"))
-	print(data.inputs[_id].key)
 	data.inputs[_id].setting = request.form["setting"].decode("utf8")
-	data.inputs[_id].inverse = request.form["inverse"].decode("utf8")
-
+	data.inputs[_id].inverse = True if request.form["inverse"].decode("utf8") == "True" else False
 
 	return render_template('index.html', data=data)
 

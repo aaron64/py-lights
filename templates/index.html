@@ -76,10 +76,10 @@
 							<div class="form-group">
 								<select class="form-control" name="inverse">
 									<option
-									{% if (input.inverse == "True") %} selected="selected" {% endif %}
+									{% if input.inverse %} selected="selected" {% endif %}
 									>True</option>
 									<option
-									{% if (input.inverse == "False") %} selected="selected" {% endif %}
+									{% if not input.inverse %} selected="selected" {% endif %}
 									>False</option>
 								</select>
 							</div>
