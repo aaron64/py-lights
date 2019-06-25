@@ -18,9 +18,11 @@
 	<div>
 		{% for key, row in data.actions.items() %}
 		<div class="bg-primary">
-		<h4>{{ row.name }}</h4>
 			<form method="POST">
 				<table class="table-actions table-hover mb-4 ml-3">
+					<th
+					{% if row.parameters["Color"] is not None %} style="background-color: rgb(255,0,0);" {% endif %}
+					><h4>{{ row.name }}</h4></th>
 					<th class="pl-2 pr-2">Type</th>
 					<th class="pl-2 pr-2">Key</th>
 					<th class="pl-2 pr-2">Setting</th>
