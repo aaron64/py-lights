@@ -103,8 +103,8 @@ class App:
                 if(midiInput.type == "trigger_hold"):
                     midiInput.triggerHold(self.params, state)
                 if(midiInput.type == "toggle" and state != 0):
-                    midiInput.toggle(self.params)
-                if(midiInput.type == "hold"):
+                    midiInput.toggle(self.params, state)
+                if(midiInput.type == "hold", state):
                     midiInput.hold(self.params, 255 if state > 0 else 0)
                 if(midiInput.type == "knob"):
                     midiInput.knob(self.params, state)

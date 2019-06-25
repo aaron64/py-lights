@@ -29,6 +29,9 @@ class Action(object):
 	def updateSetting(self, setting, val):
 		self.settings[setting] = val
 
+	def getSetting(self, setting):
+		return self.settings[setting]
+
 	def update(self, params):
 		pass
 

@@ -19,8 +19,11 @@ class InputControl:
 		else:
 			self.action.release(params)
 
-	def toggle(self, params):
-		pass
+	def toggle(self, params, val):
+		if self.action.getSetting(self.setting) > 0:
+			self.action.updateSetting(self.setting, self.mapVal(0))
+		else:
+			self.action.updateSetting(self.setting, self.mapVal(val))
 
 	def hold(self, params, val):
 		self.action.updateSetting(self.setting, self.mapVal(val))
