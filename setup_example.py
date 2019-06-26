@@ -1,11 +1,10 @@
-from ActionBuilder import ActionBuilder
-
 from actions.ActionColor import ActionColor
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMute import ActionStrobeMute
 from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
 from actions.ActionChaos import ActionChaos
+from actions.ActionKeys import ActionKeys
 
 from Color import Color
 
@@ -21,7 +20,8 @@ def initialize(app, params):
     actionStrobe = app.addAction(ActionStrobe(params))
     actionStrobeMute = app.addAction(ActionStrobeMute(params))
     actionMute = app.addAction(ActionMute(params))
-    actionChaos = app.addAction(ActionChaos(params))
+    actionChaos = app.addAction(ActionChaos(params)) 
+    actionKeys = app.addAction(ActionKeys(params, 48, 72, Color.red(), Color.blue()))
 
     # Bind Inputs to Actions
     app.addInput(actionMute, "hold", 45, "On")
@@ -33,7 +33,3 @@ def initialize(app, params):
     app.addInput(actionStrobe, "knob", 7, "Intensity")
     app.addInput(actionStrobe, "knob", 8, "Speed")
     app.addInput(actionStrobeMute, "knob", 10, "Speed")
-
-
-    # Use ActionBuilder (optional)
-    ActionBuilder.buildKeys(app, 48, 72, Color.red(), Color.blue())
