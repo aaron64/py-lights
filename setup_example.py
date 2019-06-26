@@ -21,7 +21,7 @@ def initialize(app, params):
     actionStrobeMute = app.addAction(ActionStrobeMute(params))
     actionMute = app.addAction(ActionMute(params))
     actionChaos = app.addAction(ActionChaos(params)) 
-    actionKeys = app.addAction(ActionKeys(params, 48, 72, Color.red(), Color.blue()))
+    actionKeys = app.addAction(ActionKeys(params, app, 48, 72, Color.red(), Color.blue()))
 
     # Bind Inputs to Actions
     app.addInput(actionMute, "hold", 45, "On")

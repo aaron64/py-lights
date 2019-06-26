@@ -10,7 +10,7 @@ from Color import Color
 #	Release(0) - Time of the actions release
 ###
 class ActionKeys(Action):
-	def __init__(self, params, low, high, col1=Color.white(), col2=Color.white(), attack=0, release=0):
+	def __init__(self, params, app, low, high, col1=Color.white(), col2=Color.white(), attack=0, release=0):
 		super(ActionKeys, self).__init__(params, "Keys")
 		self.settings["Attack"] = attack
 		self.settings["Release"] = release
@@ -38,7 +38,7 @@ class ActionKeys(Action):
 		self.val = val
 		self.state = "attack"
 
-		self.currentColor = Color.interpolate(col1, col2, (float(_input.key-low)/(high-low)))
+		self.currentColor = Color.interpolate(self.parameters["Color1"], self.parameters["Color2"], (float(_input.key-self.low)/(self.high-self.low)))
 
 	def release(self, _input, params):
 		self.triggerTime = params["Counter"]
@@ -66,3 +66,5 @@ class ActionKeys(Action):
 			self.outputColor.g = int(self.currentColor.g * (float(intensity)/255))
 			self.outputColor.b = int(self.currentColor.b * (float(intensity)/255))
 		
+	def getHeaderCSS(self):
+		return "background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0), rgb(" + str(self.parameters["Color1"]) + "), rgb(" + str(self.parameters["Color2"]) + "))"

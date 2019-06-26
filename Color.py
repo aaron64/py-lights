@@ -13,6 +13,9 @@ class Color():
 	def __unicode__(self):
 		return u"" + str(self.r) + "," + str(self.g) + "," + str(self.b)
 
+	def __str__(self):
+		return str(self.r) + "," + str(self.g) + "," + str(self.b)
+
 	def getHTMLParameterTemplate(self): 
 		return ("<input type='range' class='custom-range' style='background-color: red !important;' value=" + str(self.r) + "/>" 
 		"<input type='range' class='custom-range' style='background-color: green !important;' value=" + str(self.g) + "/>"

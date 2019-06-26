@@ -17,18 +17,18 @@
 <div class="container pt-5">	
 	<div>
 		{% for key, row in data.actions.items() %}
-		<div class="bg-primary">
+		<div class="bg-primary" style="box-shadow: hsla(0, 0%, 0%, 0.3) 0px 8px 6px 0px">
 			<form method="POST">
+				<h4 style='{{ row.getHeaderCSS() }}'>{{ row.name }}</h4>
 				<table class="table-actions table-hover mb-4 ml-3">
-					<th
-					{% if row.parameters["Color"] is not None %} style="background-color: rgb(255,0,0);" {% endif %}
-					><h4>{{ row.name }}</h4></th>
-					<th class="pl-2 pr-2">Type</th>
-					<th class="pl-2 pr-2">Key</th>
-					<th class="pl-2 pr-2">Setting</th>
-					<th class="pl-2 pr-2">Inverted</th>
-					<th class="pl-2 pr-2">Min</th>
-					<th class="pl-2 pr-2">Max</th>	
+					<tr>
+						<th class="pl-2 pr-2">Type</th>
+						<th class="pl-2 pr-2">Key</th>
+						<th class="pl-2 pr-2">Setting</th>
+						<th class="pl-2 pr-2">Inverted</th>
+						<th class="pl-2 pr-2">Min</th>
+						<th class="pl-2 pr-2">Max</th>	
+					</tr>
 					{% for input in row.inputs %}
 					<tr>
 					</tr>

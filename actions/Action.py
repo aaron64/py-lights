@@ -43,3 +43,10 @@ class Action(object):
 
 	def addInput(self, _input):
 		self.inputs.append(_input)
+
+	def getHeaderCSS(self):
+		if not ("Color" in self.parameters):
+			return ""
+		print(self.parameters["Color"])
+		print(str(self.parameters["Color"]))
+		return "background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0), rgb(" + str(self.parameters["Color"]) + "))"
