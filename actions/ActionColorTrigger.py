@@ -19,7 +19,7 @@ class ActionColorTrigger(Action):
 		self.triggerTime = 0
 		self.val = 0
 
-	def trigger(self, params, val):
+	def trigger(self, params, _input, val):
 		self.triggerTime = params["Counter"]
 		self.val = val
 

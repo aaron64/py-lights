@@ -25,7 +25,7 @@ class ActionStrobeTap(Action):
 		self.outputColor.g = int(self.parameters["Color"].g * (float(out)/255))
 		self.outputColor.b = int(self.parameters["Color"].b * (float(out)/255))
 
-	def trigger(self, params, val):
+	def trigger(self, params, _input, val):
 		self.taps += 1
 		if self.taps%2 == 0:
 			self.rate = params["Counter"] - self.countAtTap

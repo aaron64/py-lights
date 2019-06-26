@@ -10,6 +10,6 @@ class ActionHttpGet(Action):
 		super(ActionHttpGet, self).__init__(params, "HTTP Get")
 		self.parameters["URL"] = url
 
-	def trigger(self, params, val):
+	def trigger(self, params, _input, val):
 		r = requests.get(self.parameters["URL"])
 		print("Http get response: {}".format(r.status_code))

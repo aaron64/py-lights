@@ -97,7 +97,7 @@ class App:
         state = message[2] * 2
 
         for _id, midiInput in self.inputs.items():
-            if(midiInput.key == key):
+            if(midiInput.checkInput(key)):
                 if(midiInput.type == "trigger" and state != 0 ):
                     midiInput.trigger(self.params, state)
                 if(midiInput.type == "trigger_hold"):

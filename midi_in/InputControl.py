@@ -10,14 +10,17 @@ class InputControl:
 		self.min = minVal
 		self.max = maxVal
 
+	def checkInput(self, key):
+		return self.key == key
+
 	def trigger(self, params, val):
-		self.action.trigger(params, self.mapVal(val))
+		self.action.trigger(params, self, self.mapVal(val))
 
 	def triggerHold(self, params, val):
 		if self.mapVal(val) != self.min:
-			self.action.trigger(params, self.mapVal(val))
+			self.action.trigger(params, self, self.mapVal(val))
 		else:
-			self.action.release(params)
+			self.action.release(params, self)
 
 	def toggle(self, params, val):
 		if self.action.getSetting(self.setting) > 0:

@@ -35,11 +35,11 @@ class Action(object):
 	def update(self, params):
 		pass
 
-	def trigger(self, params, val):
+	def trigger(self, params, _input, val):
 		pass
 
-	def release(self, params):
+	def release(self, params, _input):
 		pass
 
-	def addInput(self, input):
-		self.inputs.append(input)
+	def addInput(self, _input):
+		self.inputs.append(_input)
