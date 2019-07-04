@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>Py-Lights UI</title>
     <link rel="stylesheet" href= "{{ url_for('static',filename='bootstrap.min.css') }}">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='jquery.js') }}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
@@ -19,8 +19,16 @@
 		{% for key, row in data.actions.items() %}
 		<div class="bg-primary" style="box-shadow: hsla(0, 0%, 0%, 0.3) 0px 8px 6px 0px">
 			<form method="POST">
-				<h4 style='{{ row.getHeaderCSS() }}'>{{ row.name }}</h4>
-				<table class="table-actions table-hover mb-4 ml-3">
+				<h3 style='{{ row.getHeaderCSS() }}'>{{ row.name }}</h3>
+				<table class="table-parameters table-hover mb-4 ml-3">
+					{% for key, parameter in row.parameters.items() %}
+					<tr>
+						<td><h4>{{ key }}</h4></td>
+						<td>{{ parameter.getHTMLParameterTemplate()|safe }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				<table class="table-inputs table-hover mb-4 ml-3">
 					<tr>
 						<th class="pl-2 pr-2">Type</th>
 						<th class="pl-2 pr-2">Key</th>
@@ -30,12 +38,10 @@
 						<th class="pl-2 pr-2">Max</th>	
 					</tr>
 					{% for input in row.inputs %}
-					<tr>
-					</tr>
-					<tr>
+					<tr class="input-form">
 						<td class="pl-2 pr-2">
 							<div class="form-group">
-								<input type="hidden" name="id" value="{{ input.id }}">
+								<input type="hidden" class="input-id" name="id" value="{{ input.id }}">
 								<select class="form-control" name="type">
 									<option
 									{% if (input.type == "hold") %} selected="selected" {% endif %}
@@ -88,16 +94,20 @@
 						</td>
 						<td class="pl-2 pr-2">{{ input.min }}</td>
 						<td class="pl-2 pr-2">{{ input.max }}</td>
-
-						<td><button class="btn btn-success">Save</button></td>
 						<td><button class="btn btn-danger">Delete</button></td>
 					</tr>
 					{% endfor %}
+					<td><button class="btn btn-success" id="update_input">Save</button></td>
+					<td><button class="btn btn-danger">Delete</button></td>
 				</table>
 			</form>
 		</div>
 		{% endfor %}
 	</div>
 </div>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript src="{{url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

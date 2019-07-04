@@ -17,9 +17,9 @@ class Color():
 		return str(self.r) + "," + str(self.g) + "," + str(self.b)
 
 	def getHTMLParameterTemplate(self): 
-		return ("<input type='range' class='custom-range' style='background-color: red !important;' value=" + str(self.r) + "/>" 
-		"<input type='range' class='custom-range' style='background-color: green !important;' value=" + str(self.g) + "/>"
-		"<input type='range' class='custom-range' style='background-color: blue !important;' value=" + str(self.b) + "/>")
+		return ("<input type='range' style='-webkit-appearance: none;-moz-apperance: none;border-radius: 6px; height: 6px; background-image: linear-gradient(to right, white , red);' value=" + str(self.r) + ">"
+			"<input type='range'  style='-webkit-appearance: none;-moz-apperance: none;border-radius: 6px; height: 6px; background-image: linear-gradient(to right, white , green);' style='background-color: green !important;' value=" + str(self.g) + ">"
+			"<input type='range'  style='-webkit-appearance: none;-moz-apperance: none;border-radius: 6px; height: 6px; background-image: linear-gradient(to right, white , blue);' style='background-color: blue !important;' value=" + str(self.b) + ">")
 	
 	@classmethod
 	def interpolate(cls, col1, col2, val):
