@@ -14,15 +14,6 @@ class Action(object):
 			"MUTE": False
 		};
 
-	def getR(self):
-		return self.settings["R"]
-
-	def getG(self):
-		return self.settings["G"]
-
-	def getB(self):
-		return self.settings["B"]
-
 	def updateSetting(self, setting, val):
 		self.settings[setting] = val
 

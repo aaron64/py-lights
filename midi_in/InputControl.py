@@ -12,11 +12,11 @@ class InputControl:
 	def trigger(self, params, val):
 		self.action.trigger(params, self.mapVal(val))
 
-        def triggerHold(self, params, val):
-            if self.mapVal(val) != self.min:
-                    self.action.trigger(params, self.mapVal(val))
-            else:
-                    self.action.release(params)
+		def triggerHold(self, params, val):
+			if self.mapVal(val) != self.min:
+					self.action.trigger(params, self.mapVal(val))
+			else:
+					self.action.release(params)
 
 	def toggle(self, params):
 		pass
