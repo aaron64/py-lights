@@ -6,6 +6,7 @@ from setup import initialize
 
 from midi_in.InputControl import InputControl
 from midi_in.InputLogger import InputLogger
+from LEDStrip import clear_LEDs
 from Color import Color
 
 class App:
@@ -21,27 +22,33 @@ class App:
     def main(self):
         print("Starting py-lights...")
 
+        LED_COUNT      = 16
+        LED_PIN       = 18
+        LED_FREQ_HZ    = 800000
+        LED_DMA        = 10
+        LED_BRIGHTNESS = 255
+        LED_INVERT     = False
+        LED_CHANNEL    = 0
+
+        strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+        strip.begin()
+
         self.params = {
-            "R": 0,
-            "G": 0, 
-            "B": 0, 
-            "MAX": 255, 
             "Counter": 1,
-            "PIN_R": 0,
-            "PIN_G": 0,
-            "PIN_B": 0
+            "MAX": 255
         }
 
         self.inputLogger = InputLogger()
 
         self.actions = []
-        self.inputs = []
+        self.inputs  = []
+        
+        self.LEDs    = []
+
+        for i in range(LED_COUNT):
+            self.LEDs.append({'R':0, 'G':0, 'B':0, 'A':1})
 
         initialize(self, self.params)
-
-        # initialize gpio
-        print("Initializing GPIO")
-        pi = pigpio.pi()
 
         # initialize midi
         print("Initializing MIDI")
@@ -53,20 +60,11 @@ class App:
         while True:
             self.params["Counter"] += 1
 
-            self.params["R"] = 0
-            self.params["G"] = 0
-            self.params["B"] = 0
+            clear_LEDs(self.LEDs)
             self.params["VISIBILITY"] = 1
             
             for action in self.actions:
-                action.update(self.params)
-
-            for action in self.actions:
-                self.params["R"] += action.settings["Color"].r
-                self.params["G"] += action.settings["Color"].g
-                self.params["B"] += action.settings["Color"].b
-                if action.settings["MUTE"] == True:
-                    self.params["VISIBILITY"] = 0
+                action.update(self.params, LEDs)
 
             self.params["R"] = min(self.params["R"], self.params["MAX"])
             self.params["G"] = min(self.params["G"], self.params["MAX"])
