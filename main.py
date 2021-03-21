@@ -1,104 +1,107 @@
 import rtmidi.midiutil as midiutil
 import time
-import pigpio
 
 from setup import initialize
 
-from midi_in.InputControl import InputControl
+from midi_in.Trigger import Trigger, TriggerStates
 from midi_in.InputLogger import InputLogger
-from Color import Color
+
+from rpi_ws281x import *
+
+LED_COUNT = 60
+LED_PIN = 18
+LED_FREQ_HZ = 800000
+LED_DMA = 10
+LED_BRIGHTNESS = 255
+LED_INVERT = False
+LED_CHANNEL = 0
+
+strip = None
 
 class App:
-    def addAction(self, action):
-        self.actions.append(action)
-        return action
+	def addTrigger(self, trigger):
+		self.triggers[trigger.key].append(trigger)
+		self.inputLogger.addTrigger(trigger)
+		if trigger.action not in self.actions:
+			self.actions.append(trigger.action)
 
-    def addInput(self, action, type, key, setting):
-        midiInput = InputControl(action, type, key, setting)
-        self.inputs.append(midiInput)
-        self.inputLogger.addInput(midiInput)
+	def main(self):
+		global strip
+		print("Starting py-lights...")
 
-    def main(self):
-        print("Starting py-lights...")
+		self.params = {
+			"MAX": 255,
+			"LEDCount": LED_COUNT,
+			"KeyCount": 128,
+			"Counter": 1,
+		}
 
-        self.params = {
-            "R": 0,
-            "G": 0, 
-            "B": 0, 
-            "MAX": 255, 
-            "Counter": 1,
-            "PIN_R": 0,
-            "PIN_G": 0,
-            "PIN_B": 0
-        }
+		self.inputLogger = InputLogger()
 
-        self.inputLogger = InputLogger()
+		self.triggers = []
+		for i in range(self.params["KeyCount"]):
+			self.triggers.append([])
 
-        self.actions = []
-        self.inputs = []
+		self.actions = []
 
-        initialize(self, self.params)
 
-        # initialize gpio
-        print("Initializing GPIO")
-        pi = pigpio.pi()
+		initialize(self, self.params)
 
-        # initialize midi
-        print("Initializing MIDI")
-        midiin, port_name = midiutil.open_midiinput(1)
-        midiin.set_callback(self)
+		strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+		strip.begin()
 
-        print("Ready...")
-        # Main loop
-        while True:
-            self.params["Counter"] += 1
+		for x in range(0, LED_COUNT):
+			strip.setPixelColor(x, Color(0, 0, 0))
+		strip.show()
 
-            self.params["R"] = 0
-            self.params["G"] = 0
-            self.params["B"] = 0
-            self.params["VISIBILITY"] = 1
-            
-            for action in self.actions:
-                action.update(self.params)
+		# initialize midi
+		print("Initializing MIDI")
+		midiin, port_name = midiutil.open_midiinput(1)
+		midiin.set_callback(self)
 
-            for action in self.actions:
-                self.params["R"] += action.settings["Color"].r
-                self.params["G"] += action.settings["Color"].g
-                self.params["B"] += action.settings["Color"].b
-                if action.settings["MUTE"] == True:
-                    self.params["VISIBILITY"] = 0
+		print("Ready...")
+		# Main loop
+		while True:
+			self.params["Counter"] += 1
 
-            self.params["R"] = min(self.params["R"], self.params["MAX"])
-            self.params["G"] = min(self.params["G"], self.params["MAX"])
-            self.params["B"] = min(self.params["B"], self.params["MAX"])
+			for key, triggers in enumerate(self.triggers):
+				for trigger in triggers:
+					if trigger.state != TriggerStates.Idle:
+						trigger.update(self.params)
 
-            pi.set_PWM_dutycycle(self.params["PIN_R"], self.params["R"] * self.params["VISIBILITY"])
-            pi.set_PWM_dutycycle(self.params["PIN_G"], self.params["G"] * self.params["VISIBILITY"])
-            pi.set_PWM_dutycycle(self.params["PIN_B"], self.params["B"] * self.params["VISIBILITY"])
+			for action in self.actions:
+				action.update(self.params)
 
-            time.sleep(0.01)
+			for i in range(0, LED_COUNT):
+				strip.setPixelColor(i, Color(0, 0, 0))
 
-        print("Goodbye!")
+			for action in self.actions:
+				action.render(self.params, strip)
 
-    def __call__(self, event, data=None):
-        message, deltatime = event
+			# for key, trigger in self.triggers.items():
+			# 	if trigger.settings["MUTE"] == True:
+			# 		self.params["VISIBILITY"] = 0
+			
+			strip.show()
+			time.sleep(0.00001)
 
-        print(message)
-        vel = message[0]
-        key = message[1]
-        state = message[2] * 2
+		print("Goodbye!")
 
-        for midiInput in self.inputs:
-            if(midiInput.key == key):
-                if(midiInput.type == "trigger" and state != 0 ):
-                    midiInput.trigger(self.params, state)
-                if(midiInput.type == "trigger_hold"):
-                    midiInput.triggerHold(self.params, state)
-                if(midiInput.type == "toggle" and state != 0):
-                    midiInput.toggle(self.params)
-                if(midiInput.type == "hold"):
-                    midiInput.hold(self.params, 255 if state > 0 else 0)
-                if(midiInput.type == "knob"):
-                    midiInput.knob(self.params, state)
+	def __call__(self, event, data=None):
+		message, deltatime = event
+
+		print(message)
+		state    = message[0]
+		key      = message[1]
+		velocity = message[2] * 2
+
+		for mapKey, triggers in enumerate(self.triggers):
+			for trigger in triggers:
+				if(mapKey == key):
+					if velocity > 0:
+						print(strip)
+						trigger.trigger(self.params, strip)
+					else:
+						trigger.keyUp(self.params)
 
 App().main()

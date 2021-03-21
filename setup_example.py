@@ -7,7 +7,7 @@ from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
 from actions.ActionChaos import ActionChaos
 
-from Color import Color
+
 
 def initialize(app, params):
     # Set GPIO pins for R, G, B wires
@@ -24,15 +24,15 @@ def initialize(app, params):
     actionChaos = app.addAction(ActionChaos(params))
 
     # Bind Inputs to Actions
-    app.addInput(actionMute, "hold", 45, "On")
-    app.addInput(actionChaos, "hold", 44, "Intensity")
-    app.addInput(actionWhite, "hold", 46, "Intensity")
-    app.addInput(actionStrobeMute, "hold", 47, "On")
+    app.addTrigger(actionMute, "hold", 45, "On")
+    app.addTrigger(actionChaos, "hold", 44, "Intensity")
+    app.addTrigger(actionWhite, "hold", 46, "Intensity")
+    app.addTrigger(actionStrobeMute, "hold", 47, "On")
 
-    app.addInput(actionBlue, "knob", 3, "Intensity")
-    app.addInput(actionStrobe, "knob", 7, "Intensity")
-    app.addInput(actionStrobe, "knob", 8, "Speed")
-    app.addInput(actionStrobeMute, "knob", 10, "Speed")
+    app.addTrigger(actionBlue, "knob", 3, "Intensity")
+    app.addTrigger(actionStrobe, "knob", 7, "Intensity")
+    app.addTrigger(actionStrobe, "knob", 8, "Speed")
+    app.addTrigger(actionStrobeMute, "knob", 10, "Speed")
 
 
     # Use ActionBuilder (optional)
