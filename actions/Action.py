@@ -14,10 +14,13 @@ class Action(object):
 			"MUTE": False
 		};
 
-	def updateSetting(self, setting, val):
-		self.settings[setting] = val
+	def set(self, control, val, params):
+		self.settings[control] = val
 
 	def update(self, params):
+		pass
+
+	def render(self, params, strip):
 		pass
 
 	def trigger(self, params, val):

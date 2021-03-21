@@ -9,20 +9,18 @@ from Color import Color
 #	Release(0) - Time of the actions release
 ###
 class ActionColorTrigger(Action):
-	def __init__(self, params, color = Color.white(), attack=0, sustain=20, release=0):
+	def __init__(self, params, color = Color.white()):
 		super(ActionColorTrigger, self).__init__(params)
-		self.settings["Attack"] = attack
-		self.settings["Sustain"] = sustain
-		self.settings["Release"] = release
+		
 		self.triggerTime = 0
-                self.color = color
-                self.val = 0
+		self.color = color
+		self.val = 0
 
 	def trigger(self, params, val):
 		self.triggerTime = params["Counter"]
-                self.val = val
+		self.val = val
 
-	def update(self, params):
+	def update(self, val, control, params, strip):
 		if self.triggerTime != 0:
 
 			intensity = 0
@@ -32,9 +30,9 @@ class ActionColorTrigger(Action):
 			elif timeLapsed < self.settings["Attack"] + self.settings["Sustain"]:
 				intensity = self.val
 			elif timeLapsed < self.settings["Attack"] + self.settings["Sustain"] + self.settings["Release"]:
-                                time_till_release = self.settings["Attack"] + self.settings["Sustain"]
+				time_till_release = self.settings["Attack"] + self.settings["Sustain"]
 				intensity = self.val - int((float(timeLapsed - time_till_release)/(self.settings["Release"]+1)) * self.val)
-                        else:
+			else:
 				self.triggerTime = 0
 
 			self.settings["Color"].r = int(self.color.r * (float(intensity)/255))
