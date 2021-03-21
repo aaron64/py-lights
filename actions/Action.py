@@ -1,4 +1,4 @@
-from Color import Color
+from rpi_ws281x import Color
 
 ###
 # Action

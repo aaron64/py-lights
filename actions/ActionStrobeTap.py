@@ -1,5 +1,5 @@
 from actions.Action import Action
-from Color import Color
+
 
 ###
 # ActionStrobeTap: Displays a color in a strobe pattern to the beat of a tap

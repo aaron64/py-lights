@@ -7,7 +7,7 @@ from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMute import ActionMute
 from actions.ActionChaos import ActionChaos
 
-from Color import Color
+
 
 def initialize(app, params):
     # Set GPIO pins for R, G, B wires
