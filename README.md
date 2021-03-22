@@ -1,13 +1,13 @@
 
 
 
-# Py-Lights
-Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to 5050 LEDs.
+# Py-Lights V2
+Py-Lights (name pending) is a program to bind MIDI inputs different effects (actions) that output to WS2812x LEDs.
 
 ## Setup
-0. Configure hardware (I followed [this](https://dordnung.de/raspberrypi-ledstrip/](https://dordnung.de/raspberrypi-ledstrip/)) tutorial)
-1. Get [python-rtmidi](https://pypi.org/project/python-rtmidi/) ```pip install python-rtmidi```
-2. Get [pigpio](http://abyz.me.uk/rpi/pigpio/download.html) ```sudo apt-get install pigpio python-pigpio```
+1. Configure hardware (you can follow [this](https://tutorials-raspberrypi.com/connect-control-raspberry-pi-ws2812-rgb-led-strips/)) tutorial)
+2. Get [python-rtmidi](https://pypi.org/project/python-rtmidi/) ```pip install python-rtmidi```
+2. Get [rpi_ws281x](https://pypi.org/project/rpi-ws281x/) ```pip install rpi_ws281x```
 
 ## Creating your action setup
 To add actions to the program, use ```setup.py``` to add actions, then add inputs to them (see ```setup_example.py```).

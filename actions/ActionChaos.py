@@ -1,5 +1,7 @@
 from actions.Action import Action
-
+from rpi_ws281x import Color
+from colors import *
+from strip_utils import *
 
 import random
 
@@ -9,22 +11,28 @@ import random
 # 	Intensity(0) - Intensity of the action
 ###
 class ActionChaos(Action):
-	def __init__(self, params):
-		super(ActionChaos, self).__init__(params)
+	def __init__(self, params, mask="ALL"):
+		super(ActionChaos, self).__init__(params, False, mask)
 		self.settings["Intensity"] = 0
+		self.settings["Speed"] = 1
 
-		self.counter = 0
-		self.speed = 1
+		self.buffer = []
+		for i in range(params['LEDCount']):
+			self.buffer.append({
+				"life": random.randint(1,20),
+				"color": get_random_color()
+			})
 
 	def update(self, params):
-		self.counter += 1
+		for buff in self.buffer:
+			buff["life"] -= 1
+			if buff["life"] <= 0:
+				buff["life"] = random.randint(1,20)
+				buff["color"] = get_random_color()
 
-		if self.counter >= self.speed:
-			self.counter = 0
-			self.speed = random.randint(1, 7)
-			self.color = Color.getRandomColor()
+	def render(self, params, strip):
+		if self.settings["Intensity"] != 0:
+			for x in self.mask:
+				addColorToStrip(strip, x, level_color(self.buffer[x]["color"], self.settings["Intensity"]))
 
-		
-		self.settings["Color"].r = int(self.color.r * (float(self.settings["Intensity"])/255))
-		self.settings["Color"].g = int(self.color.g * (float(self.settings["Intensity"])/255))
-		self.settings["Color"].b = int(self.color.b * (float(self.settings["Intensity"])/255))
+

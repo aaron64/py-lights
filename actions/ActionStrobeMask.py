@@ -1,21 +1,18 @@
 from actions.Action import Action
-from rpi_ws281x import Color
-from colors import *
 from strip_utils import *
 
 ###
-# ActionStrobe: Displays a color in a strobe pattern
+# ActionMuteStrobe: Mutes the LEDs in a strobe pattern
 # Settings:
-# 	Intensity(0) - Intensity of the action
+# 	Mute(0) - Mutes the LEDs if value > 127
 #	Speed(5) - Timeing of the strobe effect
 ###
-class ActionStrobe(Action):
-	def __init__(self, params, color = WHITE, mask="ALL"):
-		super(ActionStrobe, self).__init__(params, False, mask)
+class ActionStrobeMask(Action):
+	def __init__(self, params, mask="ALL"):
+		super(ActionStrobeMask, self).__init__(params, False, mask)
 		self.settings["Intensity"] = 0
-		self.settings["Speed"] = 20
+		self.settings["Speed"] = 3
 		self.on = False
-		self.color = color
 		self.nextFlip = params['Counter'] + self.settings["Speed"]
 
 	def update(self, params):
@@ -23,7 +20,7 @@ class ActionStrobe(Action):
 			self.nextFlip = params['Counter'] + self.settings["Speed"]		
 			self.on = not self.on
 
-	def render(self, params, strip):
+	def render_mask(self, params, strip):
 		if self.on and self.settings["Intensity"] != 0:
 			for x in self.mask:
-				addColorToStrip(strip, x, level_color(self.color, self.settings["Intensity"]))
+				maskPixel(strip, x, 1-self.settings["Intensity"])

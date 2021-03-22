@@ -1,3 +1,4 @@
+import random
 from rpi_ws281x import Color
 
 WHITE   = Color(255, 255, 255)
@@ -10,6 +11,9 @@ BLUE    = Color(0, 0, 255)
 CYAN    = Color(0, 255, 255)
 MAGENTA = Color(255, 0, 255)
 YELLOW  = Color(255, 255, 0)
+
+def get_random_color():
+	return random.choice([CYAN, MAGENTA, YELLOW, RED, GREEN, BLUE, WHITE, BLACK])
 
 def level_color(col, level):
 	return Color(

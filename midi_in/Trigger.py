@@ -8,18 +8,28 @@ class TriggerStates(enum.Enum):
 	Release         = 16
 	AttackCancelled = 32
 
+default_envelope = {
+	"attack":  1,
+	"decay":   1,
+	"sustain": 1,
+	"release": 1	
+}
+
 class Trigger:
 	def __init__(self, action, key, envelope=None, control="DEFAULT", oneShot=False, toggle=False, inverse=False, minVal=0, maxVal=255):
 		self.action = action
 		self.key = key
 		self.state = TriggerStates.Idle
 
-		self.envelope = {
-			"attack":  envelope["attack"]  or 1,
-			"decay":   envelope["decay"]   or 1,
-			"sustain": envelope["sustain"] or 0,
-			"release": envelope["release"] or 1
-		}
+		if envelope:
+			self.envelope = {
+				"attack":  envelope["attack"]  or 1,
+				"decay":   envelope["decay"]   or 1,
+				"sustain": envelope["sustain"] or 0,
+				"release": envelope["release"] or 1
+			}
+		else:
+			self.envelope = default_envelope
 
 		self.control = control
 		self.oneShot = oneShot
