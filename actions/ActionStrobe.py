@@ -2,6 +2,7 @@ from actions.Action import Action
 from rpi_ws281x import Color
 from colors import *
 from strip_utils import *
+from Timer import Timer
 
 ###
 # ActionStrobe: Displays a color in a strobe pattern
@@ -16,11 +17,11 @@ class ActionStrobe(Action):
 		self.settings["Speed"] = 20
 		self.on = False
 		self.color = color
-		self.nextFlip = params['Counter'] + self.settings["Speed"]
+		self.timer = Timer(self.settings["Speed"])
 
 	def update(self, params):
-		if params['Counter'] > self.nextFlip:
-			self.nextFlip = params['Counter'] + self.settings["Speed"]		
+		if self.timer.expired():
+			self.timer.reset()
 			self.on = not self.on
 
 	def render(self, params, strip):

@@ -1,5 +1,6 @@
 from actions.Action import Action
 from strip_utils import *
+from Timer import Timer
 
 ###
 # ActionMuteStrobe: Mutes the LEDs in a strobe pattern
@@ -11,13 +12,13 @@ class ActionStrobeMask(Action):
 	def __init__(self, params, mask="ALL"):
 		super(ActionStrobeMask, self).__init__(params, False, mask)
 		self.settings["Intensity"] = 0
-		self.settings["Speed"] = 3
+		self.settings["Speed"] = 30
 		self.on = False
-		self.nextFlip = params['Counter'] + self.settings["Speed"]
+		self.timer = Timer(self.settings["Speed"])
 
 	def update(self, params):
-		if params['Counter'] > self.nextFlip:
-			self.nextFlip = params['Counter'] + self.settings["Speed"]		
+		if self.timer.expired():
+			self.timer.reset()
 			self.on = not self.on
 
 	def render_mask(self, params, strip):

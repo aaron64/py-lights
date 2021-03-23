@@ -1,39 +1,66 @@
 from ActionBuilder import ActionBuilder
 
 from actions.ActionColor import ActionColor
+from actions.ActionChaser import ActionChaser
 from actions.ActionStrobe import ActionStrobe
 from actions.ActionStrobeMask import ActionStrobeMask
-from actions.ActionColorTrigger import ActionColorTrigger
 from actions.ActionMask import ActionMask
 from actions.ActionChaos import ActionChaos
+from midi_in.Trigger import Trigger
 
-
+from rpi_ws281x import Color
+from colors import *
 
 def initialize(app, params):
-    # Set GPIO pins for R, G, B wires
-    params["PIN_R"] = 17
-    params["PIN_G"] = 22
-    params["PIN_B"] = 24
-
     # Create Actions
-    actionWhite = app.addAction(ActionColor(params))
-    actionBlue = app.addAction(ActionColor(params, Color(0, 0, 255)))
-    actionStrobe = app.addAction(ActionStrobe(params))
-    actionStrobeMask = app.addAction(ActionStrobeMask(params))
-    actionMute = app.addAction(ActionMask(params))
-    actionChaos = app.addAction(ActionChaos(params))
+    actionWhite   = ActionColor(params, WHITE)
+    actionRed     = ActionColor(params, RED, mask="x%2==1")
+    actionGreen   = ActionColor(params, GREEN)
+    actionBlue    = ActionColor(params, BLUE, mask="x%2==0")
+    actionCyan    = ActionChaser(params, CYAN, mask="x%12==0")
+    actionMagenta = ActionChaser(params, MAGENTA, mask="x%12==6")
+    actionMagenta.settings["Velocity"] = -0.1
+    actionYellow  = ActionColor(params, YELLOW)
+    
+    actionStrobe     = ActionStrobe(params, mask="ALL")
+    actionStrobeMask = ActionStrobeMask(params)
+    actionMask       = ActionMask(params)
+    actionChaos      = ActionChaos(params)
+
+    envelope = {
+        "attack":  100,
+        "decay":   150,
+        "sustain": 0.9,
+        "release": 150
+    }
+
+    glitterEnvelope = {
+        "attack":  5,
+        "decay":   15,
+        "sustain": 1,
+        "release": 15
+    }
+
+    strobeEnvelope = {
+        "attack":  1,
+        "decay":   1,
+        "sustain": 1,
+        "release": 1
+    }
+
+
+    for i in range(24):
+        mask = "x%24=="+str(i)
+        action = ActionColor(params, WHITE, mask=mask)
+        app.addTrigger(Trigger(action, i+60, glitterEnvelope, control="Intensity"))
 
     # Bind Inputs to Actions
-    app.addTrigger(actionMute, "hold", 45, "On")
-    app.addTrigger(actionChaos, "hold", 44, "Intensity")
-    app.addTrigger(actionWhite, "hold", 46, "Intensity")
-    app.addTrigger(actionStrobeMask, "hold", 47, "On")
+    app.addTrigger(Trigger(actionWhite, 48, envelope, control="Intensity"))
+    app.addTrigger(Trigger(actionCyan, 46, envelope, control="Intensity"))
+    app.addTrigger(Trigger(actionMagenta, 45, envelope, control="Intensity"))
+    app.addTrigger(Trigger(actionYellow, 44, envelope, control="Intensity"))
 
-    app.addTrigger(actionBlue, "knob", 3, "Intensity")
-    app.addTrigger(actionStrobe, "knob", 7, "Intensity")
-    app.addTrigger(actionStrobe, "knob", 8, "Speed")
-    app.addTrigger(actionStrobeMask, "knob", 10, "Speed")
-
-
-    # Use ActionBuilder (optional)
-    ActionBuilder.buildKeys(app, 48, 72, Color.red(), Color.blue())
+    app.addTrigger(Trigger(actionStrobeMask, 51, None, control="Intensity"))
+    app.addTrigger(Trigger(actionStrobe, 50, strobeEnvelope, control="Intensity"))
+    app.addTrigger(Trigger(actionChaos, 47, None, control="Intensity"))
+    app.addTrigger(Trigger(actionMask, 49, None, control="Intensity"))

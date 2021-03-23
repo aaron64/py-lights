@@ -32,8 +32,7 @@ class App:
 		self.params = {
 			"MAX": 255,
 			"LEDCount": LED_COUNT,
-			"KeyCount": 128,
-			"Counter": 1,
+			"KeyCount": 128
 		}
 
 		self.inputLogger = InputLogger()
@@ -62,8 +61,6 @@ class App:
 		print("Ready...")
 		# Main loop
 		while True:
-			print("------------------------")
-			self.params["Counter"] += 1
 
 			t = time.process_time()
 
@@ -72,19 +69,11 @@ class App:
 					if trigger.state != TriggerStates.Idle:
 						trigger.update(self.params)
 
-			print("Trigger updates: %s"%(time.process_time() - t))
-			t = time.process_time()
-
 			for action in self.actions:
 				action.update(self.params)
 
-			print("Action updates: %s"%(time.process_time() - t))
-			t = time.process_time()
-
 			for i in range(0, LED_COUNT):
 				strip.setPixelColor(i, Color(0, 0, 0))
-			print("Clear pixels: %s"%(time.process_time() - t))
-			t = time.process_time()
 
 			for action in self.actions:
 				action.render(self.params, strip)
@@ -92,16 +81,7 @@ class App:
 			for action in self.actions:
 				action.render_mask(self.params, strip)
 
-			print("Render actions: %s"%(time.process_time() - t))
-
-			# for key, trigger in self.triggers.items():
-			# 	if trigger.settings["MUTE"] == True:
-			# 		self.params["VISIBILITY"] = 0
-			
-			t = time.process_time()
 			strip.show()
-			print("Show Strip: %s"%(time.process_time() - t))
-			# time.sleep(0.00001)
 
 		print("Goodbye!")
 

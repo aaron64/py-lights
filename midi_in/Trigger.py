@@ -1,4 +1,5 @@
 import enum
+from Timer import Timer
 
 class TriggerStates(enum.Enum):
 	Idle            = 1
@@ -8,15 +9,21 @@ class TriggerStates(enum.Enum):
 	Release         = 16
 	AttackCancelled = 32
 
+class TriggerTypes(enum.Enum):
+	Key     = 1
+	Toggle  = 2
+	Knob    = 4
+	OneShot = 8
+
 default_envelope = {
 	"attack":  1,
 	"decay":   1,
 	"sustain": 1,
-	"release": 1	
+	"release": 1
 }
 
 class Trigger:
-	def __init__(self, action, key, envelope=None, control="DEFAULT", oneShot=False, toggle=False, inverse=False, minVal=0, maxVal=255):
+	def __init__(self, action, key, envelope=None, control="DEFAULT", type=TriggerTypes.Key, inverse=False):
 		self.action = action
 		self.key = key
 		self.state = TriggerStates.Idle
@@ -32,81 +39,53 @@ class Trigger:
 			self.envelope = default_envelope
 
 		self.control = control
-		self.oneShot = oneShot
-		self.toggle  = toggle
-
 		self.inverse = inverse
-		self.min = minVal
-		self.max = maxVal
 
-		self.triggerTime = 0
+		self.attackTimer  = Timer(self.envelope["attack"])
+		self.decayTimer   = Timer(self.envelope["decay"])
+		self.releaseTimer = Timer(self.envelope["release"])
 
 		self.val = 0
 
 	def trigger(self, params, strip):
-		self.triggerTime = params['Counter']
 		self.state = TriggerStates.Attack
+		self.attackTimer.reset()
 
 		self.action.set(self.control, self.val, params)
 
 	def keyUp(self, params):
-		if self.oneShot or self.toggle:
-			print("Oneshot or toggle, skipping")
-			return
 		if self.state == TriggerStates.Attack:
 			self.state = TriggerStates.AttackCancelled
 			return
-		self.triggerTime = params['Counter']
-		self.val = self.envelope['sustain']
 		self.state = TriggerStates.Release
+		self.val = self.envelope['sustain']
+		self.releaseTimer.reset()
 
 
 	def update(self, params):
-		# print("----------------")
-		duration = params['Counter'] - self.triggerTime
-		# print("duration %s" % duration)
 		if self.state == TriggerStates.Idle:
 			return
 		elif self.state == TriggerStates.Attack or self.state == TriggerStates.AttackCancelled:
 			# interpolate from 0 to peak
-			# print("attack")
-			self.val = min(1, duration / self.envelope["attack"])
-			if duration >= self.envelope["attack"]:
-				self.triggerTime = params["Counter"]
+			self.val = min(1, self.attackTimer.percent_finished())
+			if self.attackTimer.expired():
+				self.decayTimer.reset()
+				self.releaseTimer.reset()
 				self.state = TriggerStates.Decay if self.state == TriggerStates.Attack else TriggerStates.Release
 		elif self.state == TriggerStates.Decay:
 			# interpolate from attack level to sustain level
-			# print("decay")
-			self.val = 1-((1 - self.envelope["sustain"]) * (duration/self.envelope["decay"]))
-			if duration >= self.envelope["decay"]:
-				self.triggerTime = params["Counter"]
+			self.val = 1-(self.decayTimer.percent_finished()*(1-self.envelope["sustain"]))
+			if self.decayTimer.expired():
 				self.state = TriggerStates.Sustain
 		elif self.state == TriggerStates.Sustain:
-			# print("sustain")
 			self.val = self.envelope["sustain"]
 		elif self.state == TriggerStates.Release:
-			# print("release")
-			self.val = (1 - (duration/self.envelope["release"])) * self.envelope["sustain"]
+			self.val = self.envelope["sustain"]-(self.releaseTimer.percent_finished()*self.envelope["sustain"])
 			self.val = max(0, self.val)
-			if duration >= self.envelope["release"]:
+			if self.releaseTimer.expired():
 				self.state = TriggerStates.Idle
-		# print("val %s" % self.val)
+
 		self.action.set(self.control, self.val, params)
-
-	# def triggerHold(self, params, val):
-	# 	if self.mapVal(val) != self.min:
-	# 			self.action.trigger(params, self.mapVal(val))
-	# 	else:
-	# 			self.action.release(params)
-
-	# def toggle(self, params):
-	# 	pass
-
-	# def hold(self, params, val):
-	# 	self.action.updateSetting(self.setting, self.mapVal(val))
-	
-	# def knob(self, params, val):
-	# 	self.action.updateSetting(self.setting, self.mapVal(val))
 
 	def mapVal(self, val):
 		rangeVal = self.max - self.min
