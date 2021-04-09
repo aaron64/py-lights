@@ -5,13 +5,12 @@ from Timer import Timer
 ###
 # ActionMuteStrobe: Mutes the LEDs in a strobe pattern
 # Settings:
-# 	Mute(0) - Mutes the LEDs if value > 127
-#	Speed(5) - Timeing of the strobe effect
+# 	Mute  - Mutes the LEDs if value > 127
+#	Speed - Timeing of the strobe effect
 ###
 class ActionStrobeMask(Action):
-	def __init__(self, params, mask="ALL"):
+	def __init__(self, params, mask=None):
 		super(ActionStrobeMask, self).__init__(params, False, mask)
-		self.settings["Intensity"] = 0
 		self.settings["Speed"] = 30
 		self.on = False
 		self.timer = Timer(self.settings["Speed"])
@@ -21,7 +20,12 @@ class ActionStrobeMask(Action):
 			self.timer.reset()
 			self.on = not self.on
 
+	def set(self, control, val, params):
+		super().set(control, val, params)
+		if control == "Speed":
+			self.timer = Timer(self.settings["Speed"])
+
 	def render_mask(self, params, strip):
-		if self.on and self.settings["Intensity"] != 0:
+		if self.on and self.volume() != 0:
 			for x in self.mask:
-				maskPixel(strip, x, 1-self.settings["Intensity"])
+				maskPixel(strip, x, 1-self.volume())

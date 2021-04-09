@@ -22,7 +22,7 @@ def initialize(app, params):
     actionMagenta.settings["Velocity"] = -0.1
     actionYellow  = ActionColor(params, YELLOW)
     
-    actionStrobe     = ActionStrobe(params, mask="ALL")
+    actionStrobe     = ActionStrobe(params, mask=None)
     actionStrobeMask = ActionStrobeMask(params)
     actionMask       = ActionMask(params)
     actionChaos      = ActionChaos(params)

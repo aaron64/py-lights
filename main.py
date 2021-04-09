@@ -1,14 +1,18 @@
+#!/usr/bin/python
+
 import rtmidi.midiutil as midiutil
 import time
 
 from setup import initialize
 
-from midi_in.Trigger import Trigger, TriggerStates
+from midi_in.Trigger import *
 from midi_in.InputLogger import InputLogger
+
+from gamma_correction import *
 
 from rpi_ws281x import *
 
-LED_COUNT = 60
+LED_COUNT = 119
 LED_PIN = 18
 LED_FREQ_HZ = 800000
 LED_DMA = 10
@@ -81,6 +85,8 @@ class App:
 			for action in self.actions:
 				action.render_mask(self.params, strip)
 
+			correct_gamma(strip, self.params)
+
 			strip.show()
 
 		print("Goodbye!")
@@ -88,18 +94,25 @@ class App:
 	def __call__(self, event, data=None):
 		message, deltatime = event
 
-		print(message)
 		state    = message[0]
 		key      = message[1]
-		velocity = message[2] * 2
+		velocity = message[2]/128
+
+		# print(state, key, velocity)
+
+		if state == 128:
+			velocity = 0
+
 
 		for mapKey, triggers in enumerate(self.triggers):
 			for trigger in triggers:
 				if(mapKey == key):
-					if velocity > 0:
-						print(strip)
-						trigger.trigger(self.params, strip)
-					else:
-						trigger.keyUp(self.params)
+					if trigger.type == TriggerTypes.Key:
+						if velocity > 0:
+							trigger.trigger(self.params, velocity)
+						else:
+							trigger.keyUp(self.params)
+					elif trigger.type == TriggerTypes.Knob:
+						trigger.knob(self.params, velocity)
 
 App().main()

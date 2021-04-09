@@ -1,4 +1,8 @@
-gamma_correction = {
+from rpi_ws281x import *
+from colors import *
+
+
+gamma_correction = [
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
   1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
@@ -15,8 +19,13 @@ gamma_correction = {
 144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
 177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
 215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 
-};
+]
 
 def correct_gamma(strip, params):
 	for x in range(params['LEDCount']):
-		pass
+		color = strip.getPixelColor(x)
+		r = gamma_correction[red(color)]
+		g = gamma_correction[green(color)]
+		b = gamma_correction[blue(color)]
+
+		strip.setPixelColor(x, Color(r, g, b))

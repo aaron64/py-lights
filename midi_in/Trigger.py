@@ -15,31 +15,39 @@ class TriggerTypes(enum.Enum):
 	Knob    = 4
 	OneShot = 8
 
-default_envelope = {
+DEFAULT_ENVELOPE = {
 	"attack":  1,
 	"decay":   1,
 	"sustain": 1,
 	"release": 1
 }
 
+DEFAULT_KNOB_LAMBDA = "(0, 1)"
+
 class Trigger:
-	def __init__(self, action, key, envelope=None, control="DEFAULT", type=TriggerTypes.Key, inverse=False):
-		self.action = action
-		self.key = key
-		self.state = TriggerStates.Idle
+	def __init__(self, action, key, envelope=None, knob_lambda=DEFAULT_KNOB_LAMBDA, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
+		self.action        = action
+		self.key           = key
+		self.state         = TriggerStates.Idle
+		self.only_while_on = only_while_on
 
 		if envelope:
 			self.envelope = {
 				"attack":  envelope["attack"]  or 1,
 				"decay":   envelope["decay"]   or 1,
-				"sustain": envelope["sustain"] or 0,
+				"sustain": envelope["sustain"] or 1,
 				"release": envelope["release"] or 1
 			}
 		else:
-			self.envelope = default_envelope
+			self.envelope = DEFAULT_ENVELOPE
+
+		self.knob_lambda = knob_lambda
+
+		self.type = type
 
 		self.control = control
 		self.inverse = inverse
+
 
 		self.attackTimer  = Timer(self.envelope["attack"])
 		self.decayTimer   = Timer(self.envelope["decay"])
@@ -47,11 +55,23 @@ class Trigger:
 
 		self.val = 0
 
-	def trigger(self, params, strip):
+	def trigger(self, params, velocity):
 		self.state = TriggerStates.Attack
 		self.attackTimer.reset()
 
+		self.action.trigger(params, velocity)
 		self.action.set(self.control, self.val, params)
+
+	def knob(self, params, velocity):
+		bounds = eval(self.knob_lambda)
+		minimum = bounds[0]
+		maximum = bounds[1]
+		diff = maximum - minimum
+		val = velocity * diff + minimum
+
+		if not self.only_while_on or self.action.is_on():
+			self.action.set(self.control, val, params)
+
 
 	def keyUp(self, params):
 		if self.state == TriggerStates.Attack:
@@ -63,6 +83,12 @@ class Trigger:
 
 
 	def update(self, params):
+		if self.type == TriggerTypes.Key:
+			self.updateKey(params)
+
+		self.action.set(self.control, self.val, params)
+
+	def updateKey(self, params):
 		if self.state == TriggerStates.Idle:
 			return
 		elif self.state == TriggerStates.Attack or self.state == TriggerStates.AttackCancelled:
@@ -83,9 +109,9 @@ class Trigger:
 			self.val = self.envelope["sustain"]-(self.releaseTimer.percent_finished()*self.envelope["sustain"])
 			self.val = max(0, self.val)
 			if self.releaseTimer.expired():
+				self.val = 0
+				self.action.release(params)
 				self.state = TriggerStates.Idle
-
-		self.action.set(self.control, self.val, params)
 
 	def mapVal(self, val):
 		rangeVal = self.max - self.min

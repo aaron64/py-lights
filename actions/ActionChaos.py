@@ -2,37 +2,59 @@ from actions.Action import Action
 from rpi_ws281x import Color
 from colors import *
 from strip_utils import *
+from Timer import Timer
 
+import colorsys
 import random
 
 ###
 # ActionChaos: Displays a strobe of random colors at random times
 # Settings:
-# 	Intensity(0) - Intensity of the action
+# 	Intensity - Intensity of the action
+# 	Speed	  - Time it takes for a color to reset
 ###
 class ActionChaos(Action):
-	def __init__(self, params, mask="ALL"):
+	def __init__(self, params, colors = None, mask=None):
 		super(ActionChaos, self).__init__(params, False, mask)
-		self.settings["Intensity"] = 0
-		self.settings["Speed"] = 1
+		self.settings["Speed"] = 1000
+		self.colors = colors
 
 		self.buffer = []
 		for i in range(params['LEDCount']):
 			self.buffer.append({
-				"life": random.randint(1,20),
-				"color": get_random_color()
+				"timer": Timer(random.randint(round(self.settings["Speed"]), round(self.settings["Speed"]*2))),
+				"color": self._get_next_color()
 			})
+
+	def _get_next_color(self):
+		if self.colors is None:
+			x = random.uniform(0, 1)
+			(r, g, b) = colorsys.hsv_to_rgb(x, 1.0, 1.0)
+			color = Color(int(255 * r), int(255 * g), int(255 * b))
+			return color
+		else:
+			return random.choice(self.colors)
+
+	def set(self, control, val, params):
+		super().set(control, val, params)
+		if control == "Speed":
+			for i in range(params['LEDCount']):
+				self.buffer[i]["timer"].soft_reset()
 
 	def update(self, params):
 		for buff in self.buffer:
-			buff["life"] -= 1
-			if buff["life"] <= 0:
-				buff["life"] = random.randint(1,20)
-				buff["color"] = get_random_color()
+			if buff["timer"].expired():
+				buff["timer"].duration = random.randint(round(self.settings["Speed"]), round(self.settings["Speed"]*2))
+				buff["timer"].reset()
+
+				x = random.uniform(0, 1)
+				(r, g, b) = colorsys.hsv_to_rgb(x, 1.0, 1.0)
+				color = Color(int(255 * r), int(255 * g), int(255 * b))
+				buff["color"] = self._get_next_color()
 
 	def render(self, params, strip):
-		if self.settings["Intensity"] != 0:
+		if self.volume() != 0:
 			for x in self.mask:
-				addColorToStrip(strip, x, level_color(self.buffer[x]["color"], self.settings["Intensity"]))
+				addColorToStrip(strip, x, level_color(self.buffer[x]["color"], self.volume()))
 
 

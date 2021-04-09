@@ -1,21 +1,14 @@
 from rpi_ws281x import Color
 
-###
-# Action
-# Settings:
-#	Color(Color(0,0,0)) - Output color of the action
-#	MUTE(False) - Whether to mute LEDs
-###
 class Action(object):
-	def __init__(self, params, inverse=False, mask="ALL"):
+	def __init__(self, params, inverse=False, mask=None):
 		self.inverse = inverse
 		self.settings = {
-			"Color": Color(0,0,0),
-			"MUTE": False
-		};
-		print(params['LEDCount'])
+			"Intensity": 0,
+			"Volume": 1
+		}
 
-		if mask == "ALL":
+		if mask == None:
 			self.mask = [*range(params["LEDCount"])]
 		elif isinstance(mask, str):
 			self.mask = []
@@ -26,7 +19,16 @@ class Action(object):
 			self.mask = mask
 
 	def set(self, control, val, params):
-		self.settings[control] = val
+		try:
+			self.settings[control] = val
+		except Exception as e:
+			print(e)
+
+	def volume(self):
+		return self.settings["Intensity"] * self.settings["Volume"]
+
+	def is_on(self):
+		return self.settings["Intensity"] > 0
 
 	def update(self, params):
 		pass

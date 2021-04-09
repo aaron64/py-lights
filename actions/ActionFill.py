@@ -5,15 +5,16 @@ from strip_utils import *
 from Timer import Timer
 
 ###
-# ActionChaser: Displays a color that moves across in a loop
+# ActionFill: Fills the LEDs from a single point
 # Settings:
 # 	Intensity - Intensity of the action
 # 	Velocity  - Speed and direction of flow
 ###
-class ActionChaser(Action):
+class ActionFill(Action):
 	def __init__(self, params, color = WHITE, mask=None):
-		super(ActionChaser, self).__init__(params, False, mask)
-		self.settings["Velocity"] = 0.1
+		super(ActionFill, self).__init__(params, False, mask)
+		self.settings["Speed"] = 10
+		self.settings["Position"] = params["LEDCount"]/2
 
 		self.timer = Timer(60)
 		self.offset = 0
@@ -23,13 +24,18 @@ class ActionChaser(Action):
 	def update(self, params):
 		if self.timer.expired():
 			self.timer.reset()
-			self.offset += self.settings["Velocity"]
+			self.offset += self.settings["Speed"]
 
 	def set(self, control, val, params):
 		super().set(control, val, params)
 
+	def trigger(self, params, velocity):
+		self.offset = 0
+
 	def render(self, params, strip):
 		if self.volume() != 0:
 			for x in self.mask:
-				addColorToStrip(strip, (x+round(self.offset))%params['LEDCount'], level_color(self.color, self.volume()))
+				distance = abs(x - self.settings["Position"])
+				if distance < self.offset:
+					addColorToStrip(strip, x, level_color(self.color, self.volume()))
 	
