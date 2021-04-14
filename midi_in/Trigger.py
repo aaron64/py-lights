@@ -118,7 +118,6 @@ class Trigger:
 		return self.min + (float(val)/255) * rangeVal 
 
 	def to_dict(self):
-		print(self)
 		return {
 			"type": self.type,
 			"key": self.key,

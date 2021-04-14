@@ -108,7 +108,6 @@ class App:
 	def get_payload(self):
 		return {
 			"actions": list(map(Action.to_dict, self.actions)),
-			# "triggers": list(map(Trigger.to_dict, self.triggers))
 			"triggers": [list(map(Trigger.to_dict, x)) for x in self.triggers]
 		}
 		# return {
@@ -162,6 +161,7 @@ class App:
 		if state == 128:
 			velocity = 0
 
+		print(state, key, velocity)
 
 		for mapKey, triggers in enumerate(self.triggers):
 			for trigger in triggers:

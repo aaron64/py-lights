@@ -18,6 +18,9 @@ class ActionFill(Action):
 		self.register_setting("Speed", MAX_SPEED_BOUNDS)
 		self.register_setting("Position", MAX_POSITION_BOUNDS)
 
+		# remove this
+		self.set("Speed", 10, params)
+
 		self.timer = Timer(60)
 		self.offset = 0
 

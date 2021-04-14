@@ -17,7 +17,6 @@ class Setting(object):
 		self.value = bounds[0]
 
 	def to_dict(self):
-		print(self)
 		return {
 			"name": self.name,
 			"bounds": self.bounds,
