@@ -1,4 +1,6 @@
 from actions.Action import Action
+from actions.Setting import MAX_VELOCITY_BOUNDS
+
 from rpi_ws281x import Color
 from colors import *
 from strip_utils import *
@@ -14,9 +16,9 @@ import colorsys
 # 	Speed	  - Speed of rainbow movement
 ###
 class ActionRainbow(Action):
-	def __init__(self, params, mask=None):
-		super(ActionRainbow, self).__init__(params, False, mask)
-		self.settings["Velocity"] = 5
+	def __init__(self, params, name=None, mask=None):
+		super(ActionRainbow, self).__init__(params, name, "Rainbow", False, mask)
+		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
 
 		self.timer = Timer(60)
 		self.offset = 1
@@ -24,7 +26,7 @@ class ActionRainbow(Action):
 	def update(self, params):
 		if self.timer.expired():
 			self.timer.reset()
-			self.offset += self.settings["Velocity"]
+			self.offset += self.get("Velocity")
 			# if self.offset == params["LEDCount"]:
 			# 	self.offset = 0
 

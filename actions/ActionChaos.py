@@ -1,4 +1,6 @@
 from actions.Action import Action
+from actions.Setting import MAX_STROBE_BOUNDS
+
 from rpi_ws281x import Color
 from colors import *
 from strip_utils import *
@@ -14,15 +16,15 @@ import random
 # 	Speed	  - Time it takes for a color to reset
 ###
 class ActionChaos(Action):
-	def __init__(self, params, colors = None, mask=None):
-		super(ActionChaos, self).__init__(params, False, mask)
-		self.settings["Speed"] = 1000
+	def __init__(self, params, name=None, colors = None, mask=None):
+		super(ActionChaos, self).__init__(params, name, "Chaos", False, mask)
+		self.register_setting("Speed", MAX_STROBE_BOUNDS)
 		self.colors = colors
 
 		self.buffer = []
 		for i in range(params['LEDCount']):
 			self.buffer.append({
-				"timer": Timer(random.randint(round(self.settings["Speed"]), round(self.settings["Speed"]*2))),
+				"timer": Timer(random.randint(round(self.get("Speed")), round(self.get("Speed")*2))),
 				"color": self._get_next_color()
 			})
 
@@ -44,7 +46,7 @@ class ActionChaos(Action):
 	def update(self, params):
 		for buff in self.buffer:
 			if buff["timer"].expired():
-				buff["timer"].duration = random.randint(round(self.settings["Speed"]), round(self.settings["Speed"]*2))
+				buff["timer"].duration = random.randint(round(self.get("Speed")), round(self.get("Speed")*2))
 				buff["timer"].reset()
 
 				x = random.uniform(0, 1)

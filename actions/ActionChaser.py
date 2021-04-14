@@ -1,4 +1,6 @@
 from actions.Action import Action
+from actions.Setting import MAX_VELOCITY_BOUNDS
+
 from rpi_ws281x import Color
 from colors import *
 from strip_utils import *
@@ -11,9 +13,9 @@ from Timer import Timer
 # 	Velocity  - Speed and direction of flow
 ###
 class ActionChaser(Action):
-	def __init__(self, params, color = WHITE, mask=None):
-		super(ActionChaser, self).__init__(params, False, mask)
-		self.settings["Velocity"] = 0.1
+	def __init__(self, params, name=None, color = WHITE, mask=None):
+		super(ActionChaser, self).__init__(params, name, "Chaser", False, mask)
+		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
 
 		self.timer = Timer(60)
 		self.offset = 0
@@ -23,7 +25,7 @@ class ActionChaser(Action):
 	def update(self, params):
 		if self.timer.expired():
 			self.timer.reset()
-			self.offset += self.settings["Velocity"]
+			self.offset += self.get("Velocity")
 
 	def set(self, control, val, params):
 		super().set(control, val, params)

@@ -1,4 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
 
 import rtmidi.midiutil as midiutil
 import time
@@ -12,6 +15,10 @@ from gamma_correction import *
 
 from rpi_ws281x import *
 
+import threading
+
+from actions.Action import Action
+
 LED_COUNT = 119
 LED_PIN = 18
 LED_FREQ_HZ = 800000
@@ -20,7 +27,15 @@ LED_BRIGHTNESS = 255
 LED_INVERT = False
 LED_CHANNEL = 0
 
-strip = None
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
+
+application = None
+
+@app.route('/')
+def hello_world():
+	print(application.get_payload())
+	return render_template('index.html', data=application.get_payload())
 
 class App:
 	def addTrigger(self, trigger):
@@ -30,7 +45,6 @@ class App:
 			self.actions.append(trigger.action)
 
 	def main(self):
-		global strip
 		print("Starting py-lights...")
 
 		self.params = {
@@ -91,14 +105,59 @@ class App:
 
 		print("Goodbye!")
 
+	def get_payload(self):
+		return {
+			"actions": list(map(Action.to_dict, self.actions)),
+			# "triggers": list(map(Trigger.to_dict, self.triggers))
+			"triggers": [list(map(Trigger.to_dict, x)) for x in self.triggers]
+		}
+		# return {
+		# "actions": [
+		# 	{
+		# 		"name": "test1",
+		# 		"type": "Color",
+		# 		"parameters": [
+		# 			{
+		# 				"name": "Color",
+		# 				"value": "#FF0000",
+		# 				"type": "COLOR"
+		# 			}
+		# 		],
+		# 		"settings": [
+		# 			{
+		# 				"name": "Volume",
+		# 				"value": 1,
+		# 				"type": "PERCENTAGE"
+		# 			}
+		# 		]
+		# 	},
+		# 	{
+		# 		"name": "test2",
+		# 		"type": "Color",
+		# 		"parameters": [
+		# 			{
+		# 				"name": "Color",
+		# 				"value": "#FF0000",
+		# 				"type": "COLOR"
+		# 			}
+		# 		],
+		# 		"settings": [
+		# 			{
+		# 				"name": "Volume",
+		# 				"value": 0.5,
+		# 				"type": "PERCENTAGE"
+		# 			}
+		# 		]
+		# 	}
+		# ]
+	# }
+
 	def __call__(self, event, data=None):
 		message, deltatime = event
 
 		state    = message[0]
 		key      = message[1]
 		velocity = message[2]/128
-
-		# print(state, key, velocity)
 
 		if state == 128:
 			velocity = 0
@@ -115,4 +174,9 @@ class App:
 					elif trigger.type == TriggerTypes.Knob:
 						trigger.knob(self.params, velocity)
 
-App().main()
+
+if __name__ == '__main__':
+	application = App()
+	thread = threading.Thread(target=application.main)
+	thread.start()
+	app.run(debug=True, host='0.0.0.0', port=8085)

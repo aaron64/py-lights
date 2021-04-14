@@ -116,3 +116,12 @@ class Trigger:
 	def mapVal(self, val):
 		rangeVal = self.max - self.min
 		return self.min + (float(val)/255) * rangeVal 
+
+	def to_dict(self):
+		print(self)
+		return {
+			"type": self.type,
+			"key": self.key,
+			"control": self.control,
+			"envelope": self.envelope
+		}

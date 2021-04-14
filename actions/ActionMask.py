@@ -7,8 +7,8 @@ from strip_utils import *
 # 	Intensity - Sets intensity of the mask
 ###
 class ActionMask(Action):
-	def __init__(self, params, mask=None):
-		super(ActionMask, self).__init__(params, False, mask)
+	def __init__(self, params, name=None, mask=None):
+		super(ActionMask, self).__init__(params, name, "Mask", False, mask)
 
 	def update(self, params):
 		pass
