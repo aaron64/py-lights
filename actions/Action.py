@@ -1,8 +1,11 @@
 from rpi_ws281x import Color
 from actions.Setting import Setting
+from hashId import get_hash
 
 class Action(object):
 	def __init__(self, params, name, type, inverse=False, mask=None):
+		self.id = get_hash()
+
 		self.inverse = inverse
 		self.settings = {}
 
@@ -29,7 +32,11 @@ class Action(object):
 
 	def set(self, control, val, params):
 		try:
-			self.settings[control].value = val
+			setting = self.settings[control]
+			val = min(setting.bounds[1], val)
+			val = max(setting.bounds[0], val)
+
+			setting.value = val
 		except Exception as e:
 			print(e)
 
@@ -63,6 +70,7 @@ class Action(object):
 
 	def to_dict(self):
 		return {
+			"id": self.id,
 			"name": self.name,
 			"type": self.type,
 			"settings": list(map(Setting.to_dict, self.settings.values()))

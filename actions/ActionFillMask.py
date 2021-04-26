@@ -7,23 +7,19 @@ from strip_utils import *
 from Timer import Timer
 
 ###
-# ActionFill: Fills the LEDs from a single point
+# ActionFillMask: Fills the LEDs with a mask from a single point
 # Settings:
 # 	Intensity - Intensity of the action
 # 	Velocity  - Speed and direction of flow
 ###
-class ActionFill(Action):
-	def __init__(self, params, name=None, color = WHITE, mask=None):
-		super(ActionFill, self).__init__(params, name, "Fill", False, mask)
+class ActionFillMask(Action):
+	def __init__(self, params, name=None, mask=None):
+		super(ActionFillMask, self).__init__(params, name, "Fill", False, mask)
 		self.register_setting("Speed", MAX_SPEED_BOUNDS)
 		self.register_setting("Position", MAX_POSITION_BOUNDS)
 
-		self.set("Speed", 1, params)
-
 		self.timer = Timer(60)
 		self.offset = 0
-
-		self.color = color
 
 	def update(self, params):
 		if self.timer.expired():
@@ -41,5 +37,5 @@ class ActionFill(Action):
 			for x in self.mask:
 				distance = abs(x - self.get("Position"))
 				if distance < self.offset:
-					addColorToStrip(strip, x, level_color(self.color, self.volume()))
+					maskPixel(strip, x, 1-self.volume())
 	

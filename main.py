@@ -110,46 +110,6 @@ class App:
 			"actions": list(map(Action.to_dict, self.actions)),
 			"triggers": [list(map(Trigger.to_dict, x)) for x in self.triggers]
 		}
-		# return {
-		# "actions": [
-		# 	{
-		# 		"name": "test1",
-		# 		"type": "Color",
-		# 		"parameters": [
-		# 			{
-		# 				"name": "Color",
-		# 				"value": "#FF0000",
-		# 				"type": "COLOR"
-		# 			}
-		# 		],
-		# 		"settings": [
-		# 			{
-		# 				"name": "Volume",
-		# 				"value": 1,
-		# 				"type": "PERCENTAGE"
-		# 			}
-		# 		]
-		# 	},
-		# 	{
-		# 		"name": "test2",
-		# 		"type": "Color",
-		# 		"parameters": [
-		# 			{
-		# 				"name": "Color",
-		# 				"value": "#FF0000",
-		# 				"type": "COLOR"
-		# 			}
-		# 		],
-		# 		"settings": [
-		# 			{
-		# 				"name": "Volume",
-		# 				"value": 0.5,
-		# 				"type": "PERCENTAGE"
-		# 			}
-		# 		]
-		# 	}
-		# ]
-	# }
 
 	def __call__(self, event, data=None):
 		message, deltatime = event
@@ -161,7 +121,7 @@ class App:
 		if state == 128:
 			velocity = 0
 
-		print(state, key, velocity)
+		# print(state, key, velocity)
 
 		for mapKey, triggers in enumerate(self.triggers):
 			for trigger in triggers:

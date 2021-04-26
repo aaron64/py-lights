@@ -1,5 +1,6 @@
 import enum
 from Timer import Timer
+from hashId import get_hash
 
 class TriggerStates(enum.Enum):
 	Idle            = 1
@@ -26,6 +27,8 @@ DEFAULT_KNOB_LAMBDA = "(0, 1)"
 
 class Trigger:
 	def __init__(self, action, key, envelope=None, knob_lambda=DEFAULT_KNOB_LAMBDA, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
+		self.id = get_hash()
+
 		self.action        = action
 		self.key           = key
 		self.state         = TriggerStates.Idle
@@ -119,6 +122,7 @@ class Trigger:
 
 	def to_dict(self):
 		return {
+			"id": self.id,
 			"type": self.type,
 			"key": self.key,
 			"control": self.control,

@@ -32,7 +32,7 @@ class ActionGlitter(Action):
 	def update(self, params):
 		for buff in self.buffer:
 			if buff["timer"].expired():
-				buff["timer"].duration = random.randint(self.get("Speed"), self.get("Speed")*2)
+				buff["timer"].duration = random.random() * self.get("Speed") + self.get("Speed")
 				buff["timer"].reset()
 				if buff["color"] == self.color:
 					buff["color"] = BLACK

@@ -1,5 +1,5 @@
 from actions.Action import Action
-from actions.Setting import MAX_VELOCITY_BOUNDS
+from actions.Setting import MAX_VELOCITY_BOUNDS, MAX_WIDTH_BOUNDS
 
 from rpi_ws281x import Color
 from colors import *
@@ -12,11 +12,13 @@ from math import sin, pi
 # ActionNoise: Displays 1D perlin noise
 # Settings:
 # 	Intensity - Intensity of the action
+# 	Width - Size of the noise
 ###
 class ActionNoise(Action):
 	def __init__(self, params, name=None, color = WHITE, mask=None):
 		super(ActionNoise, self).__init__(params, name, "Noise", False, mask)
 		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
+		self.register_setting("Width", MAX_WIDTH_BOUNDS)
 
 		self.timer = Timer(60)
 		self.offset = 0
@@ -32,8 +34,7 @@ class ActionNoise(Action):
 		if self.volume() != 0:
 			for x in self.mask:
 				pos = x + self.offset
-				width = 0.2
-				val = sin(width * pos) + sin(pi * pos)+1
+				val = sin(self.get("Width") * pos) + sin(pi * pos)+1
 				val *= 0.5
 				addColorToStrip(strip, x, level_color(self.color, val * self.volume()))
 	

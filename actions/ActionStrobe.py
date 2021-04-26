@@ -34,4 +34,4 @@ class ActionStrobe(Action):
 	def render(self, params, strip):
 		if self.on and self.volume() != 0:
 			for x in self.mask:
-				addColorToStrip(strip, x, level_color(self.color, self.get("Volume") * self.volume()))
+				addColorToStrip(strip, x, level_color(self.color,  * self.volume()))

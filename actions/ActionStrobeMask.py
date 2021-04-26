@@ -25,7 +25,8 @@ class ActionStrobeMask(Action):
 	def set(self, control, val, params):
 		super().set(control, val, params)
 		if control == "Speed":
-			self.timer = Timer(self.get("Speed"))
+			self.timer.duration = self.get("Speed")
+			self.timer.soft_reset()
 
 	def render_mask(self, params, strip):
 		if self.on and self.volume() != 0:
