@@ -28,7 +28,7 @@ class ActionStrobeMask(Action):
 			self.timer.duration = self.get("Speed")
 			self.timer.soft_reset()
 
-	def render_mask(self, params, strip):
+	def render_post(self, params, strip):
 		if self.on and self.volume() != 0:
 			for x in self.mask:
-				maskPixel(strip, x, 1-self.volume())
+				mask_pixel(strip, x, 1-self.volume())

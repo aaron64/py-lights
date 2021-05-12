@@ -9,16 +9,18 @@ from Timer import Timer
 from math import sin, pi
 
 ###
-# ActionNoise: Displays 1D perlin noise
+# ActionWave: Displays a color
 # Settings:
 # 	Intensity - Intensity of the action
-# 	Width - Size of the noise
 ###
-class ActionNoise(Action):
-	def __init__(self, params, name=None, color = WHITE, mask=None):
-		super(ActionNoise, self).__init__(params, name, "Noise", False, mask)
+class ActionWave(Action):
+	def __init__(self, params, name=None, color=WHITE, mask=None):
+		super(ActionWave, self).__init__(params, name, "Color", False, mask)
 		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
 		self.register_setting("Width", MAX_WIDTH_BOUNDS)
+
+		self.set(params, "Velocity", 0)
+		self.set(params, "Width", 0.2)
 
 		self.timer = Timer()
 		self.offset = 0
@@ -33,8 +35,6 @@ class ActionNoise(Action):
 	def render(self, params, strip):
 		if self.volume() != 0:
 			for x in self.mask:
-				pos = x + self.offset
-				val = sin(self.get("Width") * pos) + sin(pi * pos)+1
-				val *= 0.5
-				add_color_to_strip(strip, x, level_color(self.color, val * self.volume()))
+				level = (sin((x+self.offset)/self.get("Width"))+1)/2
+				add_color_to_strip(strip, x, level_color(self.color, level * self.volume()))
 	

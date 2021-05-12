@@ -13,7 +13,7 @@ class ActionMask(Action):
 	def update(self, params):
 		pass
 
-	def render_mask(self, params, strip):
+	def render_post(self, params, strip):
 		if self.volume() != 0:
 			for x in self.mask:
-				maskPixel(strip, x, 1-self.volume())
+				mask_pixel(strip, x, 1-self.volume())

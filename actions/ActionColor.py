@@ -20,5 +20,5 @@ class ActionColor(Action):
 	def render(self, params, strip):
 		if self.volume() != 0:
 			for x in self.mask:
-				addColorToStrip(strip, x, level_color(self.color, self.volume()))
+				add_color_to_strip(strip, x, level_color(self.color, self.volume()))
 	

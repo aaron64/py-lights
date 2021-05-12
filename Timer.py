@@ -2,7 +2,7 @@ import time
 
 class Timer:
 
-	def __init__(self, duration=1):
+	def __init__(self, duration=16):
 		self.duration = duration
 		self.expiration = self._current_millis() + duration
 

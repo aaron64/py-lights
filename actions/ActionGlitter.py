@@ -45,6 +45,6 @@ class ActionGlitter(Action):
 				pct_finished = self.buffer[x]["timer"].percent_finished()
 				velocity = sin(pct_finished*pi*2)*0.5 + 0.5
 				if self.buffer[x]["color"] != BLACK:
-					addColorToStrip(strip, x, level_color(self.buffer[x]["color"], velocity * self.volume()))
+					add_color_to_strip(strip, x, level_color(self.buffer[x]["color"], velocity * self.volume()))
 
 

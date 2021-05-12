@@ -20,7 +20,7 @@ class ActionRainbow(Action):
 		super(ActionRainbow, self).__init__(params, name, "Rainbow", False, mask)
 		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
 
-		self.timer = Timer(60)
+		self.timer = Timer()
 		self.offset = 1
 
 	def update(self, params):
@@ -43,6 +43,6 @@ class ActionRainbow(Action):
 				(r, g, b) = colorsys.hsv_to_rgb((x+self.offset)/count, 1.0, 1.0)
 				color = Color(int(255 * r), int(255 * g), int(255 * b))
 
-				addColorToStrip(strip, x, level_color(color, self.volume()))
+				add_color_to_strip(strip, x, level_color(color, self.volume()))
 
 

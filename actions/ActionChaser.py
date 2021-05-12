@@ -17,7 +17,7 @@ class ActionChaser(Action):
 		super(ActionChaser, self).__init__(params, name, "Chaser", False, mask)
 		self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
 
-		self.timer = Timer(60)
+		self.timer = Timer()
 		self.offset = 0
 
 		self.color = color
@@ -33,5 +33,5 @@ class ActionChaser(Action):
 	def render(self, params, strip):
 		if self.volume() != 0:
 			for x in self.mask:
-				addColorToStrip(strip, (x+round(self.offset))%params['LEDCount'], level_color(self.color, self.volume()))
+				add_color_to_strip(strip, (x+round(self.offset))%params['LEDCount'], level_color(self.color, self.volume()))
 	

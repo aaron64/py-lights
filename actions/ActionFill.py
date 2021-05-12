@@ -20,7 +20,7 @@ class ActionFill(Action):
 
 		self.set("Speed", 1, params)
 
-		self.timer = Timer(60)
+		self.timer = Timer()
 		self.offset = 0
 
 		self.color = color
@@ -41,5 +41,5 @@ class ActionFill(Action):
 			for x in self.mask:
 				distance = abs(x - self.get("Position"))
 				if distance < self.offset:
-					addColorToStrip(strip, x, level_color(self.color, self.volume()))
+					add_color_to_strip(strip, x, level_color(self.color, self.volume()))
 	

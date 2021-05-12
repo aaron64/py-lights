@@ -39,6 +39,6 @@ class ActionChaosMask(Action):
 		if self.volume() != 0:
 			for x in self.mask:
 				if self.buffer[x]["on"]:
-					maskPixel(strip, x, 1-self.volume())
+					mask_pixel(strip, x, 1-self.volume())
 
 

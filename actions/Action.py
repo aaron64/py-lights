@@ -55,7 +55,7 @@ class Action(object):
 	def render(self, params, strip):
 		pass
 
-	def render_mask(self, params, strip):
+	def render_post(self, params, strip):
 		pass
 
 	def trigger(self, params, val):

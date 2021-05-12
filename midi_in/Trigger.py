@@ -23,10 +23,10 @@ DEFAULT_ENVELOPE = {
 	"release": 1
 }
 
-DEFAULT_KNOB_LAMBDA = "(0, 1)"
+DEFAULT_BOUNDS = (0, 1)
 
 class Trigger:
-	def __init__(self, action, key, envelope=None, knob_lambda=DEFAULT_KNOB_LAMBDA, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
+	def __init__(self, action, key, envelope=None, bounds=DEFAULT_BOUNDS, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
 		self.id = get_hash()
 
 		self.action        = action
@@ -44,9 +44,10 @@ class Trigger:
 		else:
 			self.envelope = DEFAULT_ENVELOPE
 
-		self.knob_lambda = knob_lambda
+		self.bounds = bounds
 
 		self.type = type
+		self.toggle = False
 
 		self.control = control
 		self.inverse = inverse
@@ -59,6 +60,19 @@ class Trigger:
 		self.val = 0
 
 	def trigger(self, params, velocity):
+		if self.type == TriggerTypes.Toggle:
+			print("Toggle")
+			if self.toggle:
+				print("Off", str(self.bounds[0]))
+				self.toggle = False
+				self.action.set(self.control, self.bounds[0], params)
+			else:
+				print("On")
+				self.toggle = True
+				self.action.trigger(params, velocity)
+				self.action.set(self.control, self.bounds[1], params)
+			return
+
 		self.state = TriggerStates.Attack
 		self.attackTimer.reset()
 
@@ -66,9 +80,8 @@ class Trigger:
 		self.action.set(self.control, self.val, params)
 
 	def knob(self, params, velocity):
-		bounds = eval(self.knob_lambda)
-		minimum = bounds[0]
-		maximum = bounds[1]
+		minimum = self.bounds[0]
+		maximum = self.bounds[1]
 		diff = maximum - minimum
 		val = velocity * diff + minimum
 
@@ -88,6 +101,8 @@ class Trigger:
 	def update(self, params):
 		if self.type == TriggerTypes.Key:
 			self.updateKey(params)
+		else:
+			return
 
 		self.action.set(self.control, self.val, params)
 

@@ -19,7 +19,7 @@ import threading
 
 from actions.Action import Action
 
-LED_COUNT = 119
+LED_COUNT = 109
 LED_PIN = 18
 LED_FREQ_HZ = 800000
 LED_DMA = 10
@@ -33,13 +33,14 @@ bootstrap = Bootstrap(app)
 application = None
 
 @app.route('/')
-def hello_world():
+def index():
 	print(application.get_payload())
 	return render_template('index.html', data=application.get_payload())
 
 class App:
 	def addTrigger(self, trigger):
 		self.triggers[trigger.key].append(trigger)
+		trigger.action.set(trigger.control, trigger.bounds[0], self.params)
 		self.inputLogger.addTrigger(trigger)
 		if trigger.action not in self.actions:
 			self.actions.append(trigger.action)
@@ -73,8 +74,11 @@ class App:
 
 		# initialize midi
 		print("Initializing MIDI")
+		midiutil.list_input_ports()
 		midiin, port_name = midiutil.open_midiinput(1)
+		midiin2, port_name = midiutil.open_midiinput(2)
 		midiin.set_callback(self)
+		midiin2.set_callback(self)
 
 		print("Ready...")
 		# Main loop
@@ -97,7 +101,7 @@ class App:
 				action.render(self.params, strip)
 
 			for action in self.actions:
-				action.render_mask(self.params, strip)
+				action.render_post(self.params, strip)
 
 			correct_gamma(strip, self.params)
 
@@ -126,7 +130,7 @@ class App:
 		for mapKey, triggers in enumerate(self.triggers):
 			for trigger in triggers:
 				if(mapKey == key):
-					if trigger.type == TriggerTypes.Key:
+					if trigger.type == TriggerTypes.Key or trigger.type == TriggerTypes.Toggle:
 						if velocity > 0:
 							trigger.trigger(self.params, velocity)
 						else:
@@ -139,4 +143,4 @@ if __name__ == '__main__':
 	application = App()
 	thread = threading.Thread(target=application.main)
 	thread.start()
-	app.run(debug=True, host='0.0.0.0', port=8085)
+	app.run(debug=True, host='0.0.0.0', port=8085, use_reloader=False)
