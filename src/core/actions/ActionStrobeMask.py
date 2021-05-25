@@ -1,8 +1,8 @@
-from actions.Action import Action
-from actions.Setting import MAX_STROBE_BOUNDS
+from core.actions.Action import Action
+from core.actions.Setting import MAX_STROBE_BOUNDS
 
-from strip_utils import *
-from Timer import Timer
+from core.utils.strip_utils import *
+from core.utils.Timer import Timer
 
 ###
 # ActionMuteStrobe: Mutes the LEDs in a strobe pattern

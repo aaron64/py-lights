@@ -1,11 +1,11 @@
-from actions.Action import Action
-from actions.Setting import MAX_VELOCITY_BOUNDS, MAX_POSITION_BOUNDS
+from core.actions.Action import Action
+from core.actions.Setting import MAX_VELOCITY_BOUNDS, MAX_POSITION_BOUNDS
 
 from rpi_ws281x import Color
-from colors import *
-from strip_utils import *
+from core.colors import *
+from core.utils.strip_utils import *
 
-from entities.EntitySwipe import EntitySwipe
+from core.entities.EntityBolt import EntityBolt
 
 ###
 # ActionBolt: Displays a color
@@ -21,4 +21,4 @@ class ActionBolt(Action):
 		self.color = color
 
 	def trigger(self, app, params, val):
-		app.add_entity(EntitySwipe(params, self.color, self.get("Velocity"), self.get("Position")))
+		app.add_entity(EntityBolt(params, self.color, self.get("Velocity"), self.get("Position")))

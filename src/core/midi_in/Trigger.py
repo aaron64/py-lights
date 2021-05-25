@@ -1,6 +1,6 @@
 import enum
-from Timer import Timer
-from hash_id import get_hash
+from core.utils.Timer import Timer
+from core.utils.hash_id import get_hash
 
 class TriggerStates(enum.Enum):
 	Idle            = 1

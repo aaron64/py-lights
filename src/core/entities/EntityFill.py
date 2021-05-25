@@ -1,8 +1,8 @@
-from entities.Entity import Entity
-from colors import *
-from strip_utils import *
+from core.entities.Entity import Entity
+from core.colors import *
+from core.utils.strip_utils import *
 
-from Timer import Timer
+from core.utils.Timer import Timer
 
 from math import floor
 

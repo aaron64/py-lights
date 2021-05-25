@@ -1,14 +1,14 @@
-from entities.Entity import Entity
-from colors import *
-from strip_utils import *
+from core.entities.Entity import Entity
+from core.colors import *
+from core.utils.strip_utils import *
 
-from Timer import Timer
+from core.utils.Timer import Timer
 
 from math import floor
 
-class EntitySwipe(Entity):
+class EntityBolt(Entity):
 	def __init__(self, params, color=WHITE, velocity=1, position=0):
-		super(EntitySwipe, self).__init__(params)
+		super(EntityBolt, self).__init__(params)
 
 		self.color = color
 

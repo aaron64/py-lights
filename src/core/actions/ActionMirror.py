@@ -1,8 +1,8 @@
 import enum
-from actions.Action import Action
+from core.actions.Action import Action
 from rpi_ws281x import Color
-from colors import *
-from strip_utils import *
+from core.colors import *
+from core.utils.strip_utils import *
 
 from math import floor
 

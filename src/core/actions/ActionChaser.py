@@ -1,10 +1,10 @@
-from actions.Action import Action
-from actions.Setting import MAX_VELOCITY_BOUNDS
+from core.actions.Action import Action
+from core.actions.Setting import MAX_VELOCITY_BOUNDS
 
 from rpi_ws281x import Color
-from colors import *
-from strip_utils import *
-from Timer import Timer
+from core.colors import *
+from core.utils.strip_utils import *
+from core.utils.Timer import Timer
 
 ###
 # ActionChaser: Displays a color that moves across in a loop

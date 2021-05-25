@@ -1,6 +1,6 @@
 from rpi_ws281x import Color
-from actions.Setting import Setting
-from hash_id import get_hash
+from core.actions.Setting import Setting
+from core.utils.hash_id import get_hash
 
 class Action(object):
 	def __init__(self, params, name, type, inverse=False, mask=None):

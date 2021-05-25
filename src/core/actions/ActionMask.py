@@ -1,5 +1,5 @@
-from actions.Action import Action
-from strip_utils import *
+from core.actions.Action import Action
+from core.utils.strip_utils import *
 
 ###
 # ActionMask: Mutes the LEDs when on

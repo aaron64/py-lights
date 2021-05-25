@@ -1,15 +1,14 @@
-from ActionBuilder import ActionBuilder
+from core.actions.ActionColor import ActionColor
+from core.actions.ActionChaser import ActionChaser
+from core.actions.ActionStrobe import ActionStrobe
+from core.actions.ActionStrobeMask import ActionStrobeMask
+from core.actions.ActionMask import ActionMask
+from core.actions.ActionChaos import ActionChaos
 
-from actions.ActionColor import ActionColor
-from actions.ActionChaser import ActionChaser
-from actions.ActionStrobe import ActionStrobe
-from actions.ActionStrobeMask import ActionStrobeMask
-from actions.ActionMask import ActionMask
-from actions.ActionChaos import ActionChaos
-from midi_in.Trigger import Trigger
+from core.midi_in.Trigger import Trigger
 
 from rpi_ws281x import Color
-from colors import *
+from core.colors import *
 
 def initialize(app, params):
     # Create Actions

@@ -1,4 +1,4 @@
-from colors import *
+from core.colors import *
 
 gamma_correction = [
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,

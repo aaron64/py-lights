@@ -8,17 +8,16 @@ import time
 
 from setup import initialize
 
-from midi_in.Trigger import *
-from midi_in.InputLogger import InputLogger
+from core.midi_in.Trigger import *
+from core.midi_in.InputLogger import InputLogger
 
-from strip_utils import clear_LEDs
-from gamma_correction import *
+from core.utils.strip_utils import clear_LEDs, gamma_correction
 
 from rpi_ws281x import *
 
 import threading
 
-from actions.Action import Action
+from core.actions.Action import Action
 
 LED_COUNT = 109
 # LED_COUNT = 60
