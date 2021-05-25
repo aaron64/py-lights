@@ -22,9 +22,8 @@ class ActionPoint(Action):
 		pass
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				dist = abs(self.get("Position") - x)
-				if(dist < self.get("Width")):
-					add_color_to_strip(strip, x, level_color(self.color, self.volume()))
+		for x in self.mask:
+			dist = abs(self.get("Position") - x)
+			if(dist < self.get("Width")):
+				add_color_to_strip(strip, x, level_color(self.color, self.volume()))
 	

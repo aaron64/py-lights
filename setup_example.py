@@ -52,15 +52,15 @@ def initialize(app, params):
     for i in range(24):
         mask = "x%24=="+str(i)
         action = ActionColor(params, WHITE, mask=mask)
-        app.addTrigger(Trigger(action, i+60, glitterEnvelope, control="Intensity"))
+        app.add_trigger(Trigger(action, i+60, glitterEnvelope, control="Intensity"))
 
     # Bind Inputs to Actions
-    app.addTrigger(Trigger(actionWhite, 48, envelope, control="Intensity"))
-    app.addTrigger(Trigger(actionCyan, 46, envelope, control="Intensity"))
-    app.addTrigger(Trigger(actionMagenta, 45, envelope, control="Intensity"))
-    app.addTrigger(Trigger(actionYellow, 44, envelope, control="Intensity"))
+    app.add_trigger(Trigger(actionWhite, 48, envelope, control="Intensity"))
+    app.add_trigger(Trigger(actionCyan, 46, envelope, control="Intensity"))
+    app.add_trigger(Trigger(actionMagenta, 45, envelope, control="Intensity"))
+    app.add_trigger(Trigger(actionYellow, 44, envelope, control="Intensity"))
 
-    app.addTrigger(Trigger(actionStrobeMask, 51, None, control="Intensity"))
-    app.addTrigger(Trigger(actionStrobe, 50, strobeEnvelope, control="Intensity"))
-    app.addTrigger(Trigger(actionChaos, 47, None, control="Intensity"))
-    app.addTrigger(Trigger(actionMask, 49, None, control="Intensity"))
+    app.add_trigger(Trigger(actionStrobeMask, 51, None, control="Intensity"))
+    app.add_trigger(Trigger(actionStrobe, 50, strobeEnvelope, control="Intensity"))
+    app.add_trigger(Trigger(actionChaos, 47, None, control="Intensity"))
+    app.add_trigger(Trigger(actionMask, 49, None, control="Intensity"))

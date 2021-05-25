@@ -30,17 +30,13 @@ def interpolate_colors(col1, col2, val):
 	)
 
 def add_colors(col1, col2):
-	r1 = red(col1)
-	r2 = red(col2)
-	g1 = green(col1)
-	g2 = green(col2)
-	b1 = blue(col1)
-	b2 = blue(col2)
+	r = (red(col1) + red(col2))
+	g = (green(col1) + green(col2))
+	b = (blue(col1) + blue(col2))
 
-	r = min(255, r1 + r2)
-	g = min(255, g1 + g2)
-	b = min(255, b1 + b2)
-
+	r = 255 if r > 255 else r
+	g = 255 if g > 255 else g
+	b = 255 if b > 255 else b
 	return Color(r, g, b)
 
 def red(col):

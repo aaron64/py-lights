@@ -31,7 +31,6 @@ class ActionChaser(Action):
 		super().set(control, val, params)
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				add_color_to_strip(strip, (x+round(self.offset))%params['LEDCount'], level_color(self.color, self.volume()))
+		for x in self.mask:
+			add_color_to_strip(strip, (x+round(self.offset))%params['LEDCount'], level_color(self.color, self.volume()))
 	

@@ -55,8 +55,7 @@ class ActionChaos(Action):
 				buff["color"] = self._get_next_color()
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				add_color_to_strip(strip, x, level_color(self.buffer[x]["color"], self.volume()))
+		for x in self.mask:
+			add_color_to_strip(strip, x, level_color(self.buffer[x]["color"], self.volume()))
 
 

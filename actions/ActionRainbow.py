@@ -27,22 +27,14 @@ class ActionRainbow(Action):
 		if self.timer.expired():
 			self.timer.reset()
 			self.offset += self.get("Velocity")
-			# if self.offset == params["LEDCount"]:
-			# 	self.offset = 0
-
-	def set(self, control, val, params):
-		super().set(control, val, params)
-		# if control == "Speed":
-			# self.timer = Timer(self.settings["Speed"])
-
 
 	def render(self, params, strip):
 		count = params["LEDCount"]
-		if self.volume() != 0:
-			for x in self.mask:
-				(r, g, b) = colorsys.hsv_to_rgb((x+self.offset)/count, 1.0, 1.0)
-				color = Color(int(255 * r), int(255 * g), int(255 * b))
 
-				add_color_to_strip(strip, x, level_color(color, self.volume()))
+		for x in self.mask:
+			(r, g, b) = colorsys.hsv_to_rgb((x+self.offset)/count, 1.0, 1.0)
+			color = Color(int(255 * r), int(255 * g), int(255 * b))
+
+			add_color_to_strip(strip, x, level_color(color, self.volume()))
 
 

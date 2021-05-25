@@ -31,16 +31,12 @@ class ActionRings(Action):
 			self.timer.reset()
 			self.offset += self.get("Speed")
 
-	def set(self, control, val, params):
-		super().set(control, val, params)
-
-	def trigger(self, params, velocity):
+	def trigger(self, app, params, velocity):
 		self.offset = 0
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				distance = abs(x - self.get("Position"))
-				if distance < self.offset:
-					add_color_to_strip(strip, x, level_color(self.color, self.volume()))
+		for x in self.mask:
+			distance = abs(x - self.get("Position"))
+			if distance < self.offset:
+				add_color_to_strip(strip, x, level_color(self.color, self.volume()))
 	

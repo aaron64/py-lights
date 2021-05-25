@@ -24,9 +24,8 @@ class ActionMirror(Action):
 		pass
 
 	def render_post(self, params, strip):
-		if self.get("Intensity") > 0:
-			for i in range(floor(params["LEDCount"]/2)):
-				flip_index = params["LEDCount"] - i - 1
+		for i in range(floor(params["LEDCount"]/2)):
+			flip_index = params["LEDCount"] - i - 1
 
-				color = strip.getPixelColor(i)
-				set_color(strip, flip_index, color)
+			color = strip.getPixelColor(i)
+			set_color(strip, flip_index, color)

@@ -1,6 +1,6 @@
 from rpi_ws281x import Color
 from actions.Setting import Setting
-from hashId import get_hash
+from hash_id import get_hash
 
 class Action(object):
 	def __init__(self, params, name, type, inverse=False, mask=None):
@@ -47,7 +47,7 @@ class Action(object):
 		return self.get("Intensity") * self.get("Volume")
 
 	def is_on(self):
-		return self.get("Intensity") > 0
+		return bool(self.volume())
 
 	def update(self, params):
 		pass
@@ -58,7 +58,7 @@ class Action(object):
 	def render_post(self, params, strip):
 		pass
 
-	def trigger(self, params, val):
+	def trigger(self, app, params, val):
 		pass
 
 	def release(self, params):

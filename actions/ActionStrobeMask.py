@@ -1,5 +1,5 @@
 from actions.Action import Action
-from actions.Setting import MAX_SPEED_BOUNDS
+from actions.Setting import MAX_STROBE_BOUNDS
 
 from strip_utils import *
 from Timer import Timer
@@ -13,7 +13,7 @@ from Timer import Timer
 class ActionStrobeMask(Action):
 	def __init__(self, params, name=None, mask=None):
 		super(ActionStrobeMask, self).__init__(params, name, "Strobe Mask", False, mask)
-		self.register_setting("Speed", MAX_SPEED_BOUNDS)
+		self.register_setting("Speed", MAX_STROBE_BOUNDS)
 		self.on = False
 		self.timer = Timer(self.get("Speed"))
 
@@ -29,6 +29,6 @@ class ActionStrobeMask(Action):
 			self.timer.soft_reset()
 
 	def render_post(self, params, strip):
-		if self.on and self.volume() != 0:
+		if self.on:
 			for x in self.mask:
 				mask_pixel(strip, x, 1-self.volume())

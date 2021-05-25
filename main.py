@@ -11,6 +11,7 @@ from setup import initialize
 from midi_in.Trigger import *
 from midi_in.InputLogger import InputLogger
 
+from strip_utils import clear_LEDs
 from gamma_correction import *
 
 from rpi_ws281x import *
@@ -20,6 +21,7 @@ import threading
 from actions.Action import Action
 
 LED_COUNT = 109
+# LED_COUNT = 60
 LED_PIN = 18
 LED_FREQ_HZ = 800000
 LED_DMA = 10
@@ -38,12 +40,15 @@ def index():
 	return render_template('index.html', data=application.get_payload())
 
 class App:
-	def addTrigger(self, trigger):
+	def add_trigger(self, trigger):
 		self.triggers[trigger.key].append(trigger)
 		trigger.action.set(trigger.control, trigger.bounds[0], self.params)
-		self.inputLogger.addTrigger(trigger)
+		self.inputLogger.add_trigger(trigger)
 		if trigger.action not in self.actions:
 			self.actions.append(trigger.action)
+
+	def add_entity(self, entity):
+		self.entities.append(entity)
 
 	def main(self):
 		print("Starting py-lights...")
@@ -61,15 +66,14 @@ class App:
 			self.triggers.append([])
 
 		self.actions = []
-
+		self.entities = []
 
 		initialize(self, self.params)
 
 		strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 		strip.begin()
 
-		for x in range(0, LED_COUNT):
-			strip.setPixelColor(x, Color(0, 0, 0))
+		clear_LEDs(strip, self.params["LEDCount"])
 		strip.show()
 
 		# initialize midi
@@ -83,29 +87,50 @@ class App:
 		print("Ready...")
 		# Main loop
 		while True:
+			start = time.time()
 
-			t = time.process_time()
+			clear_LEDs(strip, self.params["LEDCount"])
 
-			for key, triggers in enumerate(self.triggers):
+			# Update
+			for triggers in self.triggers:
 				for trigger in triggers:
 					if trigger.state != TriggerStates.Idle:
 						trigger.update(self.params)
 
-			for action in self.actions:
-				action.update(self.params)
+			entity_remove_list = []
+			for entity in self.entities:
+				entity.update(self.params)
+				if entity.finished:
+					entity_remove_list.append(entity)
 
-			for i in range(0, LED_COUNT):
-				strip.setPixelColor(i, Color(0, 0, 0))
+			for entity in entity_remove_list:
+				self.entities.remove(entity)
+
 
 			for action in self.actions:
-				action.render(self.params, strip)
+				if action.is_on():
+					action.update(self.params)
+
+			# Render
+			for action in self.actions:
+				if action.is_on():
+					action.render(self.params, strip)
+
+			for entity in self.entities:
+				entity.render(self.params, strip)
 
 			for action in self.actions:
-				action.render_post(self.params, strip)
+				if action.is_on():
+					action.render_post(self.params, strip)
 
 			correct_gamma(strip, self.params)
-
+			
 			strip.show()
+
+			time_dif = time.time() - start
+			if time_dif < 0.016:
+				time.sleep(0.016 - time_dif)
+			# print(time.time() - start)
 
 		print("Goodbye!")
 
@@ -127,14 +152,14 @@ class App:
 
 		# print(state, key, velocity)
 
-		for mapKey, triggers in enumerate(self.triggers):
+		for map_key, triggers in enumerate(self.triggers):
 			for trigger in triggers:
-				if(mapKey == key):
+				if(map_key == key):
 					if trigger.type == TriggerTypes.Key or trigger.type == TriggerTypes.Toggle:
 						if velocity > 0:
-							trigger.trigger(self.params, velocity)
+							trigger.trigger(self, self.params, velocity)
 						else:
-							trigger.keyUp(self.params)
+							trigger.key_up(self.params)
 					elif trigger.type == TriggerTypes.Knob:
 						trigger.knob(self.params, velocity)
 

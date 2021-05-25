@@ -33,8 +33,7 @@ class ActionWave(Action):
 			self.offset += self.get("Velocity")
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				level = (sin((x+self.offset)/self.get("Width"))+1)/2
-				add_color_to_strip(strip, x, level_color(self.color, level * self.volume()))
+		for x in self.mask:
+			level = (sin((x+self.offset)/self.get("Width"))+1)/2
+			add_color_to_strip(strip, x, level_color(self.color, level * self.volume()))
 	

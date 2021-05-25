@@ -1,5 +1,5 @@
 from actions.Action import Action
-from actions.Setting import MAX_SPEED_BOUNDS
+from actions.Setting import MAX_STROBE_BOUNDS
 
 from rpi_ws281x import Color
 from colors import *
@@ -15,7 +15,7 @@ from Timer import Timer
 class ActionStrobe(Action):
 	def __init__(self, params, name=None, color = WHITE, mask=None):
 		super(ActionStrobe, self).__init__(params, name, "Strobe", False, mask)
-		self.register_setting("Speed", MAX_SPEED_BOUNDS)
+		self.register_setting("Speed", MAX_STROBE_BOUNDS)
 		self.on = False
 		self.color = color
 		self.timer = Timer(self.get("Speed"))
@@ -32,6 +32,6 @@ class ActionStrobe(Action):
 			self.timer.soft_reset()
 
 	def render(self, params, strip):
-		if self.on and self.volume() != 0:
+		if self.on:
 			for x in self.mask:
 				add_color_to_strip(strip, x, level_color(self.color, self.volume()))

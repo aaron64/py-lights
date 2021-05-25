@@ -36,9 +36,8 @@ class ActionChaosMask(Action):
 				buff["on"] = not buff["on"]
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				if self.buffer[x]["on"]:
-					mask_pixel(strip, x, 1-self.volume())
+		for x in self.mask:
+			if self.buffer[x]["on"]:
+				mask_pixel(strip, x, 1-self.volume())
 
 

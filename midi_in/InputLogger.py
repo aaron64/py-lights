@@ -4,7 +4,7 @@ class InputLogger():
 	def __init__(self):
 		self.inputs = []
 
-	def addTrigger(self, midiInput):
+	def add_trigger(self, midiInput):
 		self.inputs.append(midiInput)
 
 	def printPage(self):

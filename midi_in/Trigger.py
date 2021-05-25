@@ -1,6 +1,6 @@
 import enum
 from Timer import Timer
-from hashId import get_hash
+from hash_id import get_hash
 
 class TriggerStates(enum.Enum):
 	Idle            = 1
@@ -26,13 +26,14 @@ DEFAULT_ENVELOPE = {
 DEFAULT_BOUNDS = (0, 1)
 
 class Trigger:
-	def __init__(self, action, key, envelope=None, bounds=DEFAULT_BOUNDS, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
+	def __init__(self, action, key, value=None, envelope=None, bounds=DEFAULT_BOUNDS, control="Intensity", type=TriggerTypes.Key, inverse=False, only_while_on=True):
 		self.id = get_hash()
 
 		self.action        = action
 		self.key           = key
 		self.state         = TriggerStates.Idle
 		self.only_while_on = only_while_on
+		self.value         = value
 
 		if envelope:
 			self.envelope = {
@@ -53,30 +54,31 @@ class Trigger:
 		self.inverse = inverse
 
 
-		self.attackTimer  = Timer(self.envelope["attack"])
-		self.decayTimer   = Timer(self.envelope["decay"])
-		self.releaseTimer = Timer(self.envelope["release"])
+		self.attack_timer  = Timer(self.envelope["attack"])
+		self.decay_timer   = Timer(self.envelope["decay"])
+		self.release_timer = Timer(self.envelope["release"])
 
 		self.val = 0
 
-	def trigger(self, params, velocity):
+	def trigger(self, app, params, velocity):
 		if self.type == TriggerTypes.Toggle:
-			print("Toggle")
 			if self.toggle:
-				print("Off", str(self.bounds[0]))
 				self.toggle = False
 				self.action.set(self.control, self.bounds[0], params)
 			else:
-				print("On")
 				self.toggle = True
-				self.action.trigger(params, velocity)
+				self.action.trigger(app, params, velocity)
 				self.action.set(self.control, self.bounds[1], params)
 			return
 
-		self.state = TriggerStates.Attack
-		self.attackTimer.reset()
+		if self.value is not None:
+			self.action.set(self.control, self.value, params)
+			return
 
-		self.action.trigger(params, velocity)
+		self.state = TriggerStates.Attack
+		self.attack_timer.reset()
+
+		self.action.trigger(app, params, velocity)
 		self.action.set(self.control, self.val, params)
 
 	def knob(self, params, velocity):
@@ -89,51 +91,51 @@ class Trigger:
 			self.action.set(self.control, val, params)
 
 
-	def keyUp(self, params):
+	def key_up(self, params):
 		if self.state == TriggerStates.Attack:
 			self.state = TriggerStates.AttackCancelled
 			return
 		self.state = TriggerStates.Release
 		self.val = self.envelope['sustain']
-		self.releaseTimer.reset()
+		self.release_timer.reset()
 
 
 	def update(self, params):
 		if self.type == TriggerTypes.Key:
-			self.updateKey(params)
+			self.update_key(params)
 		else:
 			return
 
 		self.action.set(self.control, self.val, params)
 
-	def updateKey(self, params):
+	def update_key(self, params):
 		if self.state == TriggerStates.Idle:
 			return
 		elif self.state == TriggerStates.Attack or self.state == TriggerStates.AttackCancelled:
 			# interpolate from 0 to peak
-			self.val = min(1, self.attackTimer.percent_finished())
-			if self.attackTimer.expired():
-				self.decayTimer.reset()
-				self.releaseTimer.reset()
+			self.val = min(1, self.attack_timer.percent_finished())
+			if self.attack_timer.expired():
+				self.decay_timer.reset()
+				self.release_timer.reset()
 				self.state = TriggerStates.Decay if self.state == TriggerStates.Attack else TriggerStates.Release
 		elif self.state == TriggerStates.Decay:
 			# interpolate from attack level to sustain level
-			self.val = 1-(self.decayTimer.percent_finished()*(1-self.envelope["sustain"]))
-			if self.decayTimer.expired():
+			self.val = 1-(self.decay_timer.percent_finished()*(1-self.envelope["sustain"]))
+			if self.decay_timer.expired():
 				self.state = TriggerStates.Sustain
 		elif self.state == TriggerStates.Sustain:
 			self.val = self.envelope["sustain"]
 		elif self.state == TriggerStates.Release:
-			self.val = self.envelope["sustain"]-(self.releaseTimer.percent_finished()*self.envelope["sustain"])
+			self.val = self.envelope["sustain"]-(self.release_timer.percent_finished()*self.envelope["sustain"])
 			self.val = max(0, self.val)
-			if self.releaseTimer.expired():
+			if self.release_timer.expired():
 				self.val = 0
 				self.action.release(params)
 				self.state = TriggerStates.Idle
 
-	def mapVal(self, val):
-		rangeVal = self.max - self.min
-		return self.min + (float(val)/255) * rangeVal 
+	def map_val(self, val):
+		range_val = self.max - self.min
+		return self.min + (float(val)/255) * range_val 
 
 	def to_dict(self):
 		return {

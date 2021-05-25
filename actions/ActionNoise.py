@@ -31,10 +31,9 @@ class ActionNoise(Action):
 			self.offset += self.get("Velocity")
 
 	def render(self, params, strip):
-		if self.volume() != 0:
-			for x in self.mask:
-				pos = x + self.offset
-				val = sin(self.get("Width") * pos) + sin(pi * pos)+1
-				val *= 0.5
-				add_color_to_strip(strip, x, level_color(self.color, val * self.volume()))
+		for x in self.mask:
+			pos = x + self.offset
+			val = sin(self.get("Width") * pos) + sin(pi * pos)+1
+			val *= 0.5
+			add_color_to_strip(strip, x, level_color(self.color, val * self.volume()))
 	
