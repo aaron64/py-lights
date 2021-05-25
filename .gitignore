@@ -1,4 +1,4 @@
 *.pyc
 sftp-config.json
-setup.py
-setups/
+src/setup.py
+src/setups/
