@@ -5,6 +5,7 @@ from core.context import context
 
 from core.utils.Timer import Timer
 
+from math import sin
 
 class ShapeWave(Shape):
     def __init__(self, name):
@@ -13,8 +14,8 @@ class ShapeWave(Shape):
         self.register_setting("Velocity", MAX_VELOCITY_BOUNDS)
         self.register_setting("Width", MAX_WIDTH_BOUNDS)
 
-        self.set("Velocity", 0)
-        self.set("Width", 0.2)
+        self.settings["Velocity"].value = 0
+        self.settings["Width"].value = 0.2
 
         self.timer = Timer()
         self.offset = 0
@@ -27,6 +28,7 @@ class ShapeWave(Shape):
     def get_shape(self):
         shape = [0] * context.led_count
         for LED in range(context.led_count):
-            level = (sin((x+self.offset)/self.get("Width"))+1)/2
+            level = (sin((LED+self.offset)/self.get("Width"))+1)/2
             shape[LED] = level
-            return shape
+        
+        return shape
