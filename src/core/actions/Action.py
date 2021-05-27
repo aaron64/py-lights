@@ -1,77 +1,142 @@
 from rpi_ws281x import Color
-from core.actions.Setting import Setting
+from core.Setting import Setting, DEFAULT_BOUNDS
+from core.midi_in.Trigger import Trigger, TriggerTypes
 from core.utils.hash_id import get_hash
+from core.utils.validation import validate_name
+
+from core.context import context
 
 class Action(object):
-	def __init__(self, params, name, type, inverse=False, mask=None):
-		self.id = get_hash()
+    def __init__(self, name):
+        validate_name(name)
 
-		self.inverse = inverse
-		self.settings = {}
+        self.name = name
+        self.id = get_hash()
 
-		self.register_setting("Intensity")
-		self.register_setting("Volume")
+        self.effects = {}
+        self.shapes = {}
 
-		self.set("Volume", 1, params)
+        self.settings = {}
 
-		if name is None:
-			name = "New %s" % type
-		self.name = name
+        self.register_setting("Intensity")
+        self.register_setting("Volume")
 
-		self.type = type
+        self.set("Volume", 1)
 
-		if mask == None:
-			self.mask = [*range(params["LEDCount"])]
-		elif isinstance(mask, str):
-			self.mask = []
-			for i in range(params["LEDCount"]):
-				if eval(mask, {"x": i}):
-					self.mask.append(i)
-		else:
-			self.mask = mask
+        context.application.register_action(self)
 
-	def set(self, control, val, params):
-		try:
-			setting = self.settings[control]
-			val = min(setting.bounds[1], val)
-			val = max(setting.bounds[0], val)
+    def effect(self, effect):
+        if effect.name in self.effects:
+            raise Exception(
+                "Effect with name %s already registered" % effect.name)
 
-			setting.value = val
-		except Exception as e:
-			print(e)
+        self.effects[effect.name] = effect
+        effect.action = self
 
-	def get(self, name):
-		return self.settings[name].value
+        for name, setting in effect.get_settings().items():
+            self.add_setting(setting, '%s.%s' % (effect.name, setting.name))
 
-	def volume(self):
-		return self.get("Intensity") * self.get("Volume")
+        return self
 
-	def is_on(self):
-		return bool(self.volume())
+    def shape(self, shape):
+        if shape.name in self.shapes:
+            raise Exception(
+                "Shape with name %s already registered" % shape.name)
 
-	def update(self, params):
-		pass
+        self.shapes[shape.name] = shape
+        shape.action = self
 
-	def render(self, params, strip):
-		pass
+        for name, setting in shape.get_settings().items():
+            self.add_setting(setting, '%s.%s' % (shape.name, setting.name))
 
-	def render_post(self, params, strip):
-		pass
+        return self
 
-	def trigger(self, app, params, val):
-		pass
+    def bind_trigger(self, key, control="Intensity", value=None, envelope=None, bounds=DEFAULT_BOUNDS, type=TriggerTypes.Key, only_while_on=True):
+        if not control in self.settings:
+            raise Exception("Setting %s does not exist" % control)
 
-	def release(self, params):
-		pass
+        trigger = Trigger(self, key, control, value,
+                          envelope, bounds, type, only_while_on)
+        self.set(control, trigger.bounds[0])
 
-	def register_setting(self, name, bounds=None):
-		setting = Setting(name, bounds)
-		self.settings[name] = setting
+        context.application.register_trigger(trigger)
 
-	def to_dict(self):
-		return {
-			"id": self.id,
-			"name": self.name,
-			"type": self.type,
-			"settings": list(map(Setting.to_dict, self.settings.values()))
-		}
+        return self
+
+    def knob(self, key, control="Intensity", value=None, envelope=None, bounds=DEFAULT_BOUNDS, only_while_on=True):
+        return self.bind_trigger(key, control, value, envelope, bounds, TriggerTypes.Knob, only_while_on)
+
+    def set(self, control, val):
+        try:
+            setting = self.settings[control]
+            val = min(setting.bounds[1], val)
+            val = max(setting.bounds[0], val)
+
+            setting.value = val
+        except Exception as e:
+            print(e)
+
+    def get(self, name):
+        return self.settings[name].value
+
+    def volume(self):
+        return self.get("Intensity") * self.get("Volume")
+
+    def is_on(self):
+        return bool(self.volume())
+
+    def update(self):
+        if not self.is_on:
+            return
+
+        for name, shape in self.shapes.items():
+            shape.update()
+        for name, effect in self.effects.items():
+            effect.update()
+
+    def render(self, strip):
+        if not self.is_on:
+            return
+
+        final_shape = [1] * context.led_count
+        for name, shape in self.shapes.items():
+            final_shape = [x * y for x,
+                           y in zip(final_shape, shape.get_shape())]
+
+        volume = self.volume()
+        for name, effect in self.effects.items():
+            effect.render(strip, volume, final_shape)
+
+    def render_post(self, strip):
+        if not self.is_on:
+            return
+        # TODO: we can speed this up...
+        final_shape = [1] * context.led_count
+        for name, shape in self.shapes.items():
+            final_shape = [x * y for x,
+                           y in zip(final_shape, shape.get_shape())]
+
+        volume = self.volume()
+        for name, effect in self.effects.items():
+            effect.render_post(strip, volume, final_shape)
+        pass
+
+    def trigger(self, app, val):
+        pass
+
+    def release(self):
+        pass
+
+    def register_setting(self, name, bounds=None):
+        setting = Setting(name, bounds)
+        self.settings[name] = setting
+
+    def add_setting(self, setting, name):
+        self.settings[name] = setting
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "settings": list(map(Setting.to_dict, self.settings.values()))
+        }

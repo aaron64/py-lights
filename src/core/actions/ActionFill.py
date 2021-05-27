@@ -1,5 +1,5 @@
 from core.actions.Action import Action
-from core.actions.Setting import MAX_SPEED_BOUNDS, MAX_POSITION_BOUNDS
+from core.Setting import MAX_SPEED_BOUNDS, MAX_POSITION_BOUNDS
 
 from rpi_ws281x import Color
 from core.colors import *
@@ -14,13 +14,16 @@ from core.entities.EntityFill import EntityFill
 # 	Intensity - Intensity of the action
 # 	Velocity  - Speed and direction of flow
 ###
+
+
 class ActionFill(Action):
-	def __init__(self, params, name=None, color = WHITE, mask=None):
-		super(ActionFill, self).__init__(params, name, "Fill", False, mask)
-		self.register_setting("Speed", MAX_SPEED_BOUNDS)
-		self.register_setting("Position", MAX_POSITION_BOUNDS)
+    def __init__(self, name=None, color=WHITE, mask=None):
+        super(ActionFill, self).__init__(name, "Fill", False, mask)
+        self.register_setting("Speed", MAX_SPEED_BOUNDS)
+        self.register_setting("Position", MAX_POSITION_BOUNDS)
 
-		self.color = color
+        self.color = color
 
-	def trigger(self, app, params, velocity):
-		app.add_entity(EntityFill(params, self.color, self.get("Speed"), self.get("Position")))
+    def trigger(self, app, velocity):
+        app.add_entity(EntityFill(
+            self.color, self.get("Speed"), self.get("Position")))
